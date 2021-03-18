@@ -21,14 +21,14 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/debug.h"
 #include "utils/ustdlib.h"
-#include "circBufT.h"
+#include "labcode/circBufT.h"
 #include "OrbitOLED/OrbitOLEDInterface.h"
 
 //*****************************************************************************
 // Constants
 //*****************************************************************************
 #define BUF_SIZE 10
-#define SAMPLE_RATE_HZ 10
+#define SAMPLE_RATE_HZ 8
 
 //*****************************************************************************
 // Global variables
