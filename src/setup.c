@@ -1,8 +1,11 @@
-//*****************************************************************************
-//
-// setup.c - Extraction of initialisation code from ADCdemo1.c - Lab3
-//
-//*****************************************************************************
+/*
+ * setup.h
+ *
+ *  Created on: 19/03/2021
+ *      Author: Nat
+ *
+ *  Extraction of initialisation code from ADCdemo1.c and button polling from lab 2
+ */
 #include <stdbool.h>
 #include <stdint.h>
 #include "labcode/circBufT.h"
@@ -17,7 +20,7 @@
 
 // Constants
 #define BUF_SIZE 50
-#define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this must be done 100hz
+#define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this is being done at 500hz
 
 // Global Variables
 circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
@@ -25,10 +28,6 @@ uint32_t g_ulSampCnt;    // Counter for the interrupts
 
 // Interupts
 void SysTickIntHandler(void) {
-    //
-    // Initiate a conversion
-    //
-
     updateButtons();
     ADCProcessorTrigger(ADC0_BASE, 3);
     g_ulSampCnt++;
