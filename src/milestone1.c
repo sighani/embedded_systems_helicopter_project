@@ -16,7 +16,8 @@
 #include "utils/ustdlib.h"
 #include "labcode/buttons4.h"
 
-#define HELIRANGE (4095 * 8)/33 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
+#define HELIRANGE ((4095 * 8)/33)
+// Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
 
 
 //Heli Altitude Variables
