@@ -16,7 +16,7 @@
 #include "utils/ustdlib.h"
 #include "labcode/buttons4.h"
 
-#define HELIRANGE (4095 * 8)/30 // Maps 2^12 - 1 values to a 3V range. Then calculates bit range for 0.8V
+#define HELIRANGE (4095 * 8)/33 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
 
 
 //Heli Altitude Variables
@@ -41,6 +41,7 @@ int main(void) {
     int32_t meanVal;
     uint32_t f_displayMode = 0;
     uint8_t initflag = 1;
+    uint8_t messcount = 0;
 
 //  Calls for Initialisation
     initButtons();
@@ -84,8 +85,11 @@ int main(void) {
             heliAltPercentage = 100;
         }
 
-
-        displayMessage(meanVal, f_displayMode, heliAltPercentage);
+        if (messcount >= 12) {
+            messcount = 0;   
+            displayMessage(meanVal, f_displayMode, heliAltPercentage);
+        }
+        messcount++;
 
 
         // Button Logic
@@ -98,7 +102,9 @@ int main(void) {
                 resetAltimeter(meanVal);
             }
 
-        SysCtlDelay (SysCtlClockGet() / 12);  // Update display at ~ 4 Hz
+        updateButtons();
+        SysCtlDelay (SysCtlClockGet() / 150);  // Update display at ~ 4 Hz
+
 
     }
 

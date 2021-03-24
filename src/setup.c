@@ -28,7 +28,6 @@ uint32_t g_ulSampCnt;    // Counter for the interrupts
 
 // Interupts
 void SysTickIntHandler(void) {
-    updateButtons();
     ADCProcessorTrigger(ADC0_BASE, 3);
     g_ulSampCnt++;
 }
