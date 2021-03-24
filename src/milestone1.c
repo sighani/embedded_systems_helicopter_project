@@ -26,11 +26,11 @@ static int32_t heliAltCurrent;
 static int32_t heliAltPercentage;
 
 // Function Definitions
-void resetAltimeter(uint32_t meanVal)
-void displayPercentage(uint32_t heliPercentage)
-void displayMeanVal(uint16_t meanVal)
-void displayBlank(void)
-void displayMessage(uint16_t meanVal, uint32_t f_displayMode, uint32_t heliPercentage)
+void resetAltimeter(uint32_t meanVal);
+void displayPercentage(uint32_t heliPercentage);
+void displayMeanVal(uint16_t meanVal);
+void displayBlank(void);
+void displayMessage(uint16_t meanVal, uint32_t f_displayMode, uint32_t heliPercentage);
 
 
 
