@@ -28,6 +28,8 @@
 #define YAWC_1 GPIO_PIN_0
 #define YAWC_2 GPIO_PIN_1
 
+#define YAW_REF GPIO_PIN_4
+
 
 // Global Variables
 circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
@@ -124,6 +126,10 @@ void YawIntHandler(void) {
 
 }
 
+void yawRefIntHandler(void) {
+
+}
+
 void initYaw(void) {
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
@@ -137,6 +143,21 @@ void initYaw(void) {
 
     GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, YAWC_1 | YAWC_2);
     GPIOIntTypeSet(GPIO_PORTB_BASE, YAWC_1 | YAWC_2, GPIO_BOTH_EDGES);
+
+   //reference pin init
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC))
+    {
+        continue;
+    }
+    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
+    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
+                         GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+
+    //reference pin interrupt
+    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
+    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
+    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
 
     GPIOIntEnable(GPIO_PORTB_BASE, YAWI_1 | YAWI_2);
 }
