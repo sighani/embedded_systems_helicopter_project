@@ -10,15 +10,18 @@
 #include <stdbool.h>
 #include "labcode/circBufT.h"
 #include "driverlib/interrupt.h"
-#include "setup.h"
 #include "driverlib/sysctl.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
-#include "utils/ustdlib.h"
 #include "labcode/buttons4.h"
+#include "OrbitOLED/OrbitOLEDInterface.h"
+
+
+#include "setup.h"
+#include "display.h"
+
 
 #define HELIRANGE ((4095 * 10)/33)
+
 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
-#define TEETHINDEG ((10 * 365) / (TEETH_NUM*2))
 
 //Heli Altitude Variables
 static int32_t heliAltMax;
@@ -26,13 +29,9 @@ static int32_t heliAltMin;
 static int32_t heliAltCurrent;
 static int32_t heliAltPercentage;
 
-// Function Definitions
-void resetAltimeter(uint32_t meanVal);
-void displayPercentage(uint32_t heliPercentage);
-void displayMeanVal(uint16_t meanVal);
-void displayBlank(void);
-void displayMessage(uint16_t meanVal, uint32_t f_displayMode, uint32_t heliPercentage);
 
+//Function Declarations
+void resetAltimeter(uint32_t meanVal);
 
 
 int main(void) {
@@ -40,8 +39,7 @@ int main(void) {
     uint16_t i;
     int32_t sum;
     int32_t meanVal;
-    uint32_t f_displayMode = 0;
-    uint8_t initflag = 1;
+    uint8_t initFlag = 1;
     uint8_t messcount = 0;
 
 //  Calls for Initialisation
@@ -70,8 +68,8 @@ int main(void) {
 
 
         // Run on first start up
-        if (initflag && meanVal > 0) {
-            initflag = 0;
+        if (initFlag && meanVal > 0) {
+            initFlag = 0;
             heliAltPercentage = 0;
             heliAltMin = meanVal;
             heliAltMax = meanVal - HELIRANGE;
@@ -88,7 +86,7 @@ int main(void) {
 
         if (messcount >= 12) {
             messcount = 0;   
-            displayMessage(meanVal, f_displayMode, heliAltPercentage);
+            displayMessage(meanVal, displayMode, heliAltPercentage,g_yaw);
         }
         messcount++;
 
@@ -96,7 +94,8 @@ int main(void) {
         // Button Logic
         // Switch Display
             if ((checkButton (UP) == PUSHED)) {
-                f_displayMode = (f_displayMode + 1) % 4;
+                OrbitOledClear();
+                displayMode = (displayMode + 1) % 4;
             }
        // Re-zero altimeter
             if ((checkButton (LEFT) == PUSHED)) {
@@ -111,55 +110,10 @@ int main(void) {
 
 }
 
-
 // Utility Functions
 void resetAltimeter(uint32_t meanVal) {
     heliAltPercentage = 0;
     heliAltMin = meanVal;
 }
 
-// Function for writing to OLED
-// Functions are adaptions from ADCDemo.c Lab 3 code.
-void displayPercentage(uint32_t heliPercentage) {
-    char string[17];  // 16 characters across the display
-    OLEDStringDraw ("Altimeter", 0, 0);
-    usnprintf (string, sizeof(string), "%% of max  %3d%%", heliPercentage);
-    OLEDStringDraw (string, 0, 1);
-    OLEDStringDraw ("", 0, 3);
-}
-void displayYaw(uint32_t yaw) {
-    char string[17];  // 16 characters across the display
-    OLEDStringDraw ("Relative Direction", 0, 0);
-    usnprintf (string, sizeof(string), "%3d Deg", ( (yaw * TEETHINDEG) / 10) );
-    OLEDStringDraw (string, 0, 1);
-    OLEDStringDraw ("", 0, 3);
-}
 
-void displayMeanVal(uint16_t meanVal) {
-    char string[17];  // 16 characters across the display
-
-    OLEDStringDraw ("Altimeter", 0, 0);
-    usnprintf (string, sizeof(string), "Mean ADC = %4d", meanVal);
-    OLEDStringDraw (string, 0, 1);
-    OLEDStringDraw ("", 0, 3);
-}
-
-void displayBlank(void) {
-    OLEDStringDraw ("                ", 0, 0);
-    OLEDStringDraw ("                ", 0, 1);
-    OLEDStringDraw ("                ", 0, 3);
-}
-
-void displayMessage(uint16_t meanVal, uint32_t f_displayMode, uint32_t heliPercentage) {
-    if (f_displayMode == 0) {
-        displayPercentage(heliPercentage);
-    } else  if (f_displayMode == 1) {
-        displayMeanVal(meanVal);
-    } else if (f_displayMode == 2 ) {
-        displayBlank();
-    } else if (f_displayMode == 3 ) {
-        displayYaw(g_yaw);
-    } else {
-        //THIS 'SHOULD' NEVER HAPPEN
-    }
-}

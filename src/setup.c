@@ -44,6 +44,16 @@ static int32_t yaw_ref;
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
 
+void SysTickIntHandler(void);
+void ADCIntHandler(void);
+void initClock(void);
+void initADC(void);
+void YawIntHandler(void);
+void yawFSM(void);
+void yawRefIntHandler(void);
+void initYaw(void);
+void initDisplay(void);
+
 // Interupts
 void SysTickIntHandler(void) {
     ADCProcessorTrigger(ADC0_BASE, 3);
@@ -62,7 +72,6 @@ void ADCIntHandler(void) {
     //
     // Place it in the circular buffer (advancing write index)
     writeCircBuf(&g_inBuffer, ulValue);
-
 
 }
 
@@ -125,7 +134,6 @@ void YawIntHandler(void) {
     int32_t rawBuffer;
     uint8_t bufferState;
 
-
     GPIOIntClear(GPIO_PORTB_BASE, YAWI_1 | YAWI_2); // First function IAW line 885 driverlib/gpio.c
 
     rawBuffer = GPIOPinRead(GPIO_PORTB_BASE, (YAWC_1 | YAWC_2));
@@ -133,7 +141,7 @@ void YawIntHandler(void) {
 
     previousState = currentState;
 
-    bufferState = rawBuffer & 0x03 // 0000 00XX
+    bufferState = rawBuffer & 0x03; // 0000 00XX
     //these are done so that ascending order is clockwise assuming sensor moves relative to gears as said in lecture notes
     if (bufferState == 0x02) { //last 2 bits = 01, AB
         currentState = 3;
@@ -144,7 +152,7 @@ void YawIntHandler(void) {
     else if (bufferState == 0x01) {
         currentState = 1;
     }
-    else if (bufferState = 0x00) {
+    else if (bufferState == 0x00) {
         currentState = 0;
     }
 
@@ -168,14 +176,14 @@ void yawFSM(void) {
 
 void yawRefIntHandler(void) {
     // calculate drift
-    if (abs(yaw) >= TEETH_NUM) {
-    int32_t drift = yaw_ref + TEETH_NUM - yaw; // Calculated Drift.
+    if (abs(g_yaw) >= TEETH_NUM) {
+    int32_t drift = yaw_ref + TEETH_NUM - g_yaw; // Calculated Drift.
 
     // remove drift
-    yaw = yaw - drift;
+    g_yaw = g_yaw - drift;
 
     } else {
-        yaw_ref = yaw;
+        yaw_ref = g_yaw;
     }
 }
 
