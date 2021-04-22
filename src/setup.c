@@ -31,12 +31,15 @@
 #define YAW_REF GPIO_PIN_4
 
 
+#define TEETH_NUM 112
+
 // Global Variables
 circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
 uint32_t g_ulSampCnt;    // Counter for the interrupts
+int32_t g_yaw;              //Delta Yaw
 
-static bool atRef = false;
-static int32_t yaw = 0;
+
+static int32_t yaw_ref;
 
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
@@ -154,18 +157,26 @@ void YawIntHandler(void) {
 
 void yawFSM(void) {
     if ((currentState == 0 && previousState == 3) || (currentState == previousState + 1)) {
-        yaw--; //anti-clockwise
+        g_yaw--; //anti-clockwise
     }
     else {
-        yaw++; //clockwise
+        g_yaw++; //clockwise
     }
 }
 
 
 
 void yawRefIntHandler(void) {
+    // calculate drift
+    if (abs(yaw) >= TEETH_NUM) {
+    int32_t drift = yaw_ref + TEETH_NUM - yaw; // Calculated Drift.
 
+    // remove drift
+    yaw = yaw - drift;
 
+    } else {
+        yaw_ref = yaw;
+    }
 }
 
 void initYaw(void) {

@@ -18,7 +18,7 @@
 
 #define HELIRANGE ((4095 * 10)/33)
 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
-
+#define TEETHINDEG ((10 * 365) / (TEETH_NUM*2))
 
 //Heli Altitude Variables
 static int32_t heliAltMax;
@@ -50,7 +50,7 @@ int main(void) {
     initADC();
     initCircBuf (&g_inBuffer, BUF_SIZE);
     initDisplay();
-
+    g_yaw = 0;
 
 //  Enable ISPs
     IntMasterEnable();
@@ -96,7 +96,7 @@ int main(void) {
         // Button Logic
         // Switch Display
             if ((checkButton (UP) == PUSHED)) {
-                f_displayMode = (f_displayMode + 1) % 3;
+                f_displayMode = (f_displayMode + 1) % 4;
             }
        // Re-zero altimeter
             if ((checkButton (LEFT) == PUSHED)) {
@@ -127,6 +127,13 @@ void displayPercentage(uint32_t heliPercentage) {
     OLEDStringDraw (string, 0, 1);
     OLEDStringDraw ("", 0, 3);
 }
+void displayYaw(uint32_t yaw) {
+    char string[17];  // 16 characters across the display
+    OLEDStringDraw ("Relative Direction", 0, 0);
+    usnprintf (string, sizeof(string), "%3d Deg", ( (yaw * TEETHINDEG) / 10) );
+    OLEDStringDraw (string, 0, 1);
+    OLEDStringDraw ("", 0, 3);
+}
 
 void displayMeanVal(uint16_t meanVal) {
     char string[17];  // 16 characters across the display
@@ -150,6 +157,8 @@ void displayMessage(uint16_t meanVal, uint32_t f_displayMode, uint32_t heliPerce
         displayMeanVal(meanVal);
     } else if (f_displayMode == 2 ) {
         displayBlank();
+    } else if (f_displayMode == 3 ) {
+        displayYaw(g_yaw);
     } else {
         //THIS 'SHOULD' NEVER HAPPEN
     }

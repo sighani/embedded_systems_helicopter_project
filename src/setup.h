@@ -20,6 +20,6 @@ void initDisplay(void);
 // Global Variables
 extern circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
 extern uint32_t g_ulSampCnt;    // Counter for the interrupts
-
+extern int32_t g_yaw;
 
 #endif /* SRC_SETUP_H_ */
