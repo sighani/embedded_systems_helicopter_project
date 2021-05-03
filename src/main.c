@@ -46,6 +46,7 @@ int main(void) {
     initButtons();
     initClock();
     initADC();
+    initYaw();
     initCircBuf (&g_inBuffer, BUF_SIZE);
     initDisplay();
     g_yaw = 0;

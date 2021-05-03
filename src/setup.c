@@ -35,21 +35,22 @@
 
 // Global Variables
 circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
-uint32_t g_ulSampCnt;    // Counter for the interrupts
-int32_t g_yaw;              //Delta Yaw
+//uint32_t g_ulSampCnt;    // Counter for the interrupts
+int16_t g_yaw;              //Delta Yaw
 
 
-static int32_t yaw_ref;
-
+static int16_t yaw_ref;
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
+
+const int8_t increment[16] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
+
 
 void SysTickIntHandler(void);
 void ADCIntHandler(void);
 void initClock(void);
 void initADC(void);
 void YawIntHandler(void);
-void yawFSM(void);
 void yawRefIntHandler(void);
 void initYaw(void);
 void initDisplay(void);
@@ -57,7 +58,7 @@ void initDisplay(void);
 // Interupts
 void SysTickIntHandler(void) {
     ADCProcessorTrigger(ADC0_BASE, 3);
-    g_ulSampCnt++;
+//    g_ulSampCnt++;
 }
 
 void ADCIntHandler(void) {
@@ -129,6 +130,7 @@ void initADC(void) {
     ADCIntEnable(ADC0_BASE, 3);
 }
 
+
 //Yaw Registration
 void YawIntHandler(void) {
     int32_t rawBuffer;
@@ -141,51 +143,25 @@ void YawIntHandler(void) {
 
     previousState = currentState;
 
-    bufferState = rawBuffer & 0x03; // 0000 00XX
+    currentState = rawBuffer & 0x03;
+
+    bufferState = currentState | (previousState << 2); // 0000 YYXX Y = Previous State, X = Current State
     //these are done so that ascending order is clockwise assuming sensor moves relative to gears as said in lecture notes
-    if (bufferState == 0x02) { //last 2 bits = 01, AB
-        currentState = 3;
-    }
-    else if (bufferState == 0x03) {
-        currentState = 2;
-    }
-    else if (bufferState == 0x01) {
-        currentState = 1;
-    }
-    else if (bufferState == 0x00) {
-        currentState = 0;
-    }
 
-
-    if (currentState != previousState){
-        yawFSM();
-    }
+    g_yaw = g_yaw + increment[bufferState];
 
 }
-
-void yawFSM(void) {
-    if ((currentState == 0 && previousState == 3) || (currentState == previousState + 1)) {
-        g_yaw--; //anti-clockwise
-    }
-    else {
-        g_yaw++; //clockwise
-    }
-}
-
 
 
 void yawRefIntHandler(void) {
-    // calculate drift
-    if (abs(g_yaw) >= TEETH_NUM) {
-    int32_t drift = yaw_ref + TEETH_NUM - g_yaw; // Calculated Drift.
-
-    // remove drift
-    g_yaw = g_yaw - drift;
-
+    // calculate and remove drift
+    if (abs(g_yaw) > (TEETH_NUM * 4)) {
+        g_yaw = g_yaw - ((g_yaw % (TEETH_NUM * 4)) - yaw_ref));
     } else {
         yaw_ref = g_yaw;
     }
 }
+
 
 void initYaw(void) {
 
