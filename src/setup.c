@@ -12,8 +12,10 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/adc.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
+#include "../OrbitOLED/OrbitOLEDInterface.h"
 #include "inc/hw_memmap.h"
+//#include "driverlib/interrupt.h"
+//#include "inc/tm4c123gh6pm.h"
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
 
@@ -150,17 +152,26 @@ void YawIntHandler(void) {
 
     g_yaw = g_yaw + increment[bufferState];
 
-}
 
+    // Remove drift on Test Rig.
 
-void yawRefIntHandler(void) {
-    // calculate and remove drift
-    if (abs(g_yaw) > (TEETH_NUM * 4)) {
-        g_yaw = g_yaw - ((g_yaw % (TEETH_NUM * 4)) - yaw_ref));
-    } else {
-        yaw_ref = g_yaw;
+    if (g_yaw < 0) {
+        g_yaw = 447;
+    } else if (g_yaw > 447) {
+        g_yaw = 0;
     }
+
 }
+
+//ONLY WORKS ON HELICOPTER
+//void yawRefIntHandler(void) {
+//    // calculate and remove drift
+//    if (abs(g_yaw) > (TEETH_NUM * 4)) {
+//        g_yaw = g_yaw + ( (g_yaw % (TEETH_NUM * 4) ) - yaw_ref);
+//    } else {
+//        yaw_ref = g_yaw;
+//    }
+//}
 
 
 void initYaw(void) {
@@ -176,23 +187,28 @@ void initYaw(void) {
 
     GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, YAWC_1 | YAWC_2);
     GPIOIntTypeSet(GPIO_PORTB_BASE, YAWC_1 | YAWC_2, GPIO_BOTH_EDGES);
-
-   //reference pin init
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC))
-    {
-        continue;
-    }
-    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
-    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
-                         GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-
-    //reference pin interrupt
-    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
-    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
-    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
-
     GPIOIntEnable(GPIO_PORTB_BASE, YAWI_1 | YAWI_2);
+
+
+   // ONLY WORKS ON HELICOPTER. TEST RIGS DO NOT HAVE A REF PIN.
+   //reference pin init
+//    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+//    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC))
+//    {
+//        continue;
+//    }
+//    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
+//    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
+//                         GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+//
+//    //Int Priorities
+////    IntPrioritySet(INT_GPIOC, 0x20);
+////    IntPrioritySet(INT_GPIOB, 0x60);
+//
+//    //reference pin interrupt
+//    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
+//    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
+//    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
 }
 
 

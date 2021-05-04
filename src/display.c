@@ -6,7 +6,7 @@
  */
 #include <stdint.h>
 
-#include "OrbitOLED/OrbitOLEDInterface.h"
+#include "../OrbitOLED/OrbitOLEDInterface.h"
 #include "utils/ustdlib.h"
 
 #include "display.h"
@@ -30,7 +30,7 @@ void displayPercentage(uint32_t heliPercentage) {
 void displayYaw(int16_t yaw) {
     char string[17];  // 16 characters across the display
     OLEDStringDraw ("Relative Dir", 0, 0);
-    usnprintf (string, sizeof(string), "%3d Deg", ((((yaw * TEETHINDEG) / 10) % 360) - 180) );
+    usnprintf (string, sizeof(string), "%4d Deg", ((((yaw * TEETHINDEG) / 10) % 360)) );
     OLEDStringDraw (string, 0, 1);
     OLEDStringDraw ("", 0, 3);
 }

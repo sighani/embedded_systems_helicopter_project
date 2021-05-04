@@ -12,14 +12,14 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/sysctl.h"
 #include "labcode/buttons4.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
+#include "../OrbitOLED/OrbitOLEDInterface.h"
 
 
 #include "setup.h"
 #include "display.h"
 
 
-#define HELIRANGE ((4095 * 10)/33)
+#define HELIRANGE ((4095 * 10)/30)
 
 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
 
