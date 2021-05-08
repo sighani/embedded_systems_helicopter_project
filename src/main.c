@@ -20,6 +20,7 @@
 
 
 #define HELIRANGE ((4095 * 10)/30)
+#define SYSDISPLAYDIV 150
 
 // Maps 2^12 - 1 values to a 3.3V range. Then calculates bit range for 0.8V
 
@@ -104,7 +105,7 @@ int main(void) {
             }
 
         updateButtons();
-        SysCtlDelay (SysCtlClockGet() / 150);  // Update display at ~ 4 Hz
+        SysCtlDelay (SysCtlClockGet() / SYSDISPLAYDIV);  // Update display at ~ 4 Hz
 
 
     }

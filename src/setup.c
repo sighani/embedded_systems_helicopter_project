@@ -2,7 +2,7 @@
  * setup.h
  *
  *  Created on: 19/03/2021
- *      Author: Nat
+ *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
  *
  *  Extraction of initialisation code from ADCdemo1.c and button polling from lab 2
  */
@@ -57,7 +57,7 @@ void yawRefIntHandler(void);
 void initYaw(void);
 void initDisplay(void);
 
-// Interupts
+// Interrupts
 void SysTickIntHandler(void) {
     ADCProcessorTrigger(ADC0_BASE, 3);
 //    g_ulSampCnt++;
@@ -156,8 +156,8 @@ void YawIntHandler(void) {
     // Remove drift on Test Rig.
 
     if (g_yaw < 0) {
-        g_yaw = 447;
-    } else if (g_yaw > 447) {
+        g_yaw = ((TEETH_NUM * 4) - 1);
+    } else if (g_yaw > ((TEETH_NUM * 4) - 1)) {
         g_yaw = 0;
     }
 
@@ -178,7 +178,7 @@ void initYaw(void) {
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
 
-//    Wait for port to intialise
+//    Wait for port to initialise
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOB))
     {
         continue;

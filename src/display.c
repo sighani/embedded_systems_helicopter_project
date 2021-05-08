@@ -2,7 +2,7 @@
  * display.c
  *
  *  Created on: 22/04/2021
- *      Author: Nat
+ *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
  */
 #include <stdint.h>
 

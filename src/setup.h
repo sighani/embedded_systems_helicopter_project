@@ -2,7 +2,7 @@
  * setup.h
  *
  *  Created on: 19/03/2021
- *      Author: Nat
+ *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
  */
 
 #ifndef SRC_SETUP_H_
