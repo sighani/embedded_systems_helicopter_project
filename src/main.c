@@ -18,6 +18,7 @@
 #include "setup.h"
 #include "altitudeADC.h"
 #include "display.h"
+#include "yaw.h"
 
 
 #define HELIRANGE ((4095 * 10)/30)
