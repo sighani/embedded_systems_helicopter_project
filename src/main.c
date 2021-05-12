@@ -16,6 +16,7 @@
 
 
 #include "setup.h"
+#include "altitudeADC.h"
 #include "display.h"
 
 
