@@ -8,16 +8,6 @@
 #ifndef SRC_DISPLAY_H_
 #define SRC_DISPLAY_H_
 
-void displayPercentage(uint32_t heliPercentage);
-void displayYaw(int16_t yaw);
-void displayMeanVal(uint16_t meanVal);
-void displayBlank(void);
-void displayMessage(uint16_t meanVal, uint32_t displayMode, uint32_t heliPercentage, int16_t yaw);
-
-//Display state enum
-typedef enum {ALTIPER, ALTIMEAN, YAWDEG, BLANK} displayMode_e;
-
-extern displayMode_e displayMode;
-
+void updateFlightData(uint32_t, heli_alt, int16_t yaw, uint32_t duty_tail, uint32_t duty_main);
 
 #endif /* SRC_DISPLAY_H_ */

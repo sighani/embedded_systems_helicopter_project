@@ -20,28 +20,27 @@
 #include "driverlib/gpio.h"
 #include "altitudeADC.h"
 #include "yaw.h"
+#include "controller.h"
 
-
-//void SysTickIntHandler(void);
-//void ADCIntHandler(void);
-//void initClock(void);
-//void initADC(void);
-//void YawIntHandler(void);
-//void yawRefIntHandler(void);
-//void initYaw(void);
-//void initDisplay(void);
+#define PWM_DIVIDER_CODE SYSCTL_PWMDIV_4
 
 // Interrupts
-void SysTickIntHandler(void) {
+void SysTickIntHandler(void)
+{
     ADCProcessorTrigger(ADC0_BASE, 3);
-//    g_ulSampCnt++;
+
+    //TODO: Get it to poll error here as well
+    updateIntegralErrorAltitude();
+
+    //    g_ulSampCnt++;
 }
 
 // Intialisation
 
-void initClock(void) {
+void initClock(void)
+{
     // Set the clock rate to 20 MHz
-    SysCtlClockSet (SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
+    SysCtlClockSet(SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                    SYSCTL_XTAL_16MHZ);
 
     // Set up the period for the SysTick timer.  The SysTick timer period is
@@ -50,15 +49,18 @@ void initClock(void) {
     //
     // Register the interrupt handler
     SysTickIntRegister(SysTickIntHandler);
+
+    // Set the PWM clock rate (using the prescaler)
+    SysCtlPWMClockSet(PWM_DIVIDER_CODE);
+
     //
     // Enable interrupt and device
     SysTickIntEnable();
     SysTickEnable();
 }
 
-void initDisplay(void) {
+void initDisplay(void)
+{
     // intialise the Orbit OLED display
-    OLEDInitialise ();
+    OLEDInitialise();
 }
-
-

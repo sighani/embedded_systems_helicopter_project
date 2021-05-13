@@ -22,13 +22,12 @@
 #define BUF_SIZE 50
 #define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this is being done at 500hz
 
-
-
 // Global Variables
-circBuf_t g_inBuffer;        // Buffer of size BUF_SIZE integers (sample values)
+circBuf_t g_inBuffer; // Buffer of size BUF_SIZE integers (sample values)
 //uint32_t g_ulSampCnt;    // Counter for the interrupts
 
-void ADCIntHandler(void) {
+void ADCIntHandler(void)
+{
     uint32_t ulValue;
     // Clean up, clearing the interrupt
     ADCIntClear(ADC0_BASE, 3);
@@ -40,10 +39,10 @@ void ADCIntHandler(void) {
     //
     // Place it in the circular buffer (advancing write index)
     writeCircBuf(&g_inBuffer, ulValue);
-
 }
 
-void initADC(void) {
+void initADC(void)
+{
     //
     // The ADC0 peripheral must be enabled for configuration and use.
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
@@ -62,8 +61,7 @@ void initADC(void) {
     // sequence 0 has 8 programmable steps.  Since we are only doing a single
     // conversion using sequence 3 we will only configure step 0.  For more
     // on the ADC sequences and steps, refer to the LM3S1968 datasheet.
-    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH9 | ADC_CTL_IE |
-                             ADC_CTL_END);
+    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH9 | ADC_CTL_IE | ADC_CTL_END);
 
     //
     // Since sample sequence 3 is now configured, it must be enabled.
@@ -71,7 +69,7 @@ void initADC(void) {
 
     //
     // Register the interrupt handler
-    ADCIntRegister (ADC0_BASE, 3, ADCIntHandler);
+    ADCIntRegister(ADC0_BASE, 3, ADCIntHandler);
 
     //
     // Enable interrupts for ADC0 sequence 3 (clears any outstanding interrupts)

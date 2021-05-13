@@ -17,7 +17,6 @@
 
 #define YAW_REF GPIO_PIN_4
 
-
 #define TEETH_NUM 112
 
 // Global Variables
@@ -27,7 +26,6 @@ extern int16_t g_yaw;
 static int16_t yaw_ref;
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
-
 
 //Yaw Registration
 void YawIntHandler(void);
