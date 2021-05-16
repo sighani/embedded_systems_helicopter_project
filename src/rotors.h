@@ -1,6 +1,11 @@
 #ifndef __ROTORS_H__
 #define __ROTORS_H__
 
+#define PWM_MAIN_MAX_DUTY 95
+#define PWM_MAIN_MIN_DUTY 5
+#define PWM_TAIL_MAX_DUTY 95
+#define PWM_TAIL_MIN_DUTY 5
+
 void initMainRotor();
 
 void initTailRotor();

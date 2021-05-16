@@ -91,6 +91,7 @@ int main(void)
         }
         messcount++;
 
+        //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
         if ((checkButton(UP) == PUSHED))
         {
