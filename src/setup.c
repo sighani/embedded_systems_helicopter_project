@@ -35,7 +35,7 @@ void SysTickIntHandler(void)
     //    g_ulSampCnt++;
     g_uartCount++;
 
-    if (g_uartCount >= 25) {
+    if (g_uartCount >= 100) {
         g_uartCount = 0;
         g_uartFlag = 1;
     }

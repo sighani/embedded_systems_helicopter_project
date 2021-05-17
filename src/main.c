@@ -12,6 +12,8 @@
 #include "driverlib/sysctl.h"
 #include "labcode/buttons4.h"
 #include "../OrbitOLED/OrbitOLEDInterface.h"
+#include "driverlib/uart.h"
+
 
 
 #include "setup.h"
@@ -54,6 +56,8 @@ int main(void)
     initYaw();
     initCircBuf(&g_inBuffer, BUF_SIZE);
     initDisplay();
+    initialiseUSB_UART();
+
 
 
     g_yaw_current = 0;
@@ -106,10 +110,9 @@ int main(void)
         }
         messcount++;
 
-        // Send UART Data at 4Hz. UARTFlag is set every 25 SysTick interrupts (250ms).
         if (g_uartFlag) {
             g_uartFlag = 0;
-//            UARTSendHeli(g_alt_current);
+            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
         }
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
