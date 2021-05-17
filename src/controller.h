@@ -5,9 +5,7 @@
 #define Ki 0.01
 
 
-
-uint16_t stepInputAltitude(uint16_t ref, uint16_t current);
-void updateIntegralErrorAltitude();
+void controllerAltitude();
 
 extern float g_intcounter;
 

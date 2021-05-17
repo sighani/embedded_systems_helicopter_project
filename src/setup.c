@@ -31,9 +31,8 @@ void SysTickIntHandler(void)
 {
     ADCProcessorTrigger(ADC0_BASE, 3);
     
+    controllerAltitude();
     
-    //UPDATE PI AND PWM
-
     //    g_ulSampCnt++;
     g_uartCount++;
 
