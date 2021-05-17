@@ -19,6 +19,9 @@
 #define UART_USB_GPIO_PINS      UART_USB_GPIO_PIN_RX | UART_USB_GPIO_PIN_TX
 
 
+extern uint32_t g_uartCount;
+extern uint8_t g_uartFlag;
+
 void initialiseUSB_UART (void);
 
 void UARTSend (char *pucBuffer);

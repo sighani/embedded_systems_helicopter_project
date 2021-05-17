@@ -18,6 +18,7 @@
 #include "driverlib/gpio.h"
 #include "controller.h"
 
+
 // Constants
 #define YAWI_1 GPIO_INT_PIN_0
 #define YAWI_2 GPIO_INT_PIN_1

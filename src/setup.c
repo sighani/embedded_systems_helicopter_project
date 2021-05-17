@@ -21,10 +21,9 @@
 #include "altitudeADC.h"
 #include "yaw.h"
 #include "controller.h"
+#include "uartUSB.h"
 
-
-static uint32_t g_uartCount;
-uint8_t g_uartFlag;
+#define PWM_DIVIDER_CODE SYSCTL_PWMDIV_4
 
 // Interrupts
 void SysTickIntHandler(void)

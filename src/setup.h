@@ -13,6 +13,5 @@ void initDisplay(void);
 
 // Global Variables
 //extern uint32_t g_ulSampCnt;    // Counter for the interrupts
-extern uint8_t g_uartFlag;
 
 #endif /* SRC_SETUP_H_ */

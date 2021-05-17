@@ -30,6 +30,9 @@
 #define MIN_ALT 100
 
 
+uint16_t heliAltMax;
+uint16_t heliAltMin;
+
 //Function Declarations
 void resetAltimeter(uint32_t meanVal);
 
@@ -98,10 +101,10 @@ int main(void)
         }
         messcount++;
 
-        // Send UART data 25 SysTick interrupts (250ms).
+        // Send UART Data at 4Hz. UARTFlag is set every 25 SysTick interrupts (250ms).
         if (g_uartFlag) {
             g_uartFlag = 0;
-            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_current, g_alt_ref, g_main_duty);
+//            UARTSendHeli(g_alt_current);
         }
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps

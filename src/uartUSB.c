@@ -20,8 +20,7 @@
 #include "utils/ustdlib.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
-
+#include "../OrbitOLED/OrbitOLEDInterface.h"
 
 //********************************************************
 // Constants
@@ -42,6 +41,9 @@
 void initialiseUSB_UART (void);
 void UARTSend (char *pucBuffer);
 
+
+uint32_t g_uartCount;
+uint8_t g_uartFlag;
 
 //********************************************************
 // initialiseUSB_UART - 8 bits, 1 stop bit, no parity
@@ -84,7 +86,7 @@ UARTSend (char *pucBuffer)
     }
 }
 
-void UARTSendHeli (uint8_t yaw, uint8_t desiredYaw, uint16_t tail_DC, uint16_t altitude, uint16_t desiredAlt, uint16_t main_DC) {
+void UARTSendHeli (uint8_t yaw, uint8_t desiredYaw, uint16_t tail_DC, uint16_t desiredAlt, uint16_t altitude, uint16_t main_DC) {
     char uartOutput[101];
 
     usprintf (uartOutput, "YAW = %2d| YAW_DES = %2d TAIL_DC = %2d\r\n "

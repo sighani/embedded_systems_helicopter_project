@@ -1,12 +1,11 @@
 #include <stdint.h>
 #include <stdbool.h>
-
 #include "driverlib/pin_map.h" //Needed for pin configure
+#include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/pwm.h"
-#include "inc/hw_memmap.h"
 
 #include "rotors.h"
 
@@ -56,7 +55,7 @@ void initMainRotor(void)
     PWMOutputState(PWM_MAIN_BASE, PWM_MAIN_OUTBIT, false);
 }
 
-void initMainRotor()
+void initTailRotor()
 {
     SysCtlPeripheralReset(PWM_TAIL_PERIPH_GPIO); // Used for PWM output
     SysCtlPeripheralReset(PWM_TAIL_PERIPH_PWM);  // Main Rotor PWM
