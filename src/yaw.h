@@ -21,7 +21,6 @@
 
 // Global Variables
 //extern uint32_t g_ulSampCnt;    // Counter for the interrupts
-extern int16_t g_yaw;
 
 static int16_t yaw_ref;
 static uint8_t currentState = 0;

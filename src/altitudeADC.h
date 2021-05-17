@@ -15,9 +15,6 @@
 // Global Variables
 extern circBuf_t g_inBuffer; // Buffer of size BUF_SIZE integers (sample values)
 //uint32_t g_ulSampCnt;    // Counter for the interrupts
-//Heli Altitude Variables
-extern int32_t g_heliAltPercentage;
-extern int32_t g_heliAltSetpoint;
 
 void ADCIntHandler(void);
 void initADC(void);

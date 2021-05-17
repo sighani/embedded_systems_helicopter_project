@@ -44,17 +44,14 @@ int main(void)
 
     //  Calls for Initialisation
     initButtons();
+    initClock();
     initMainRotor();
     initTailRotor();
-    initClock();
     initADC();
     initYaw();
     initCircBuf(&g_inBuffer, BUF_SIZE);
     initDisplay();
-    g_yaw = 0;
-
-    uint8_t desiredAlt = 0;
-    uint16_t main_rot_DC = 0;
+    g_yaw_current = 0;
 
     enableRotors();
 
@@ -78,27 +75,26 @@ int main(void)
         if (initFlag && meanVal > 0)
         {
             initFlag = 0;
-            g_heliAltPercentage = 0;
+            g_alt_current = 0;
             heliAltMin = meanVal;
             heliAltMax = meanVal - HELIRANGE;
         }
 
         // Calculate alititude as percentage with cut offs
-        g_heliAltPercentage = ((heliAltMin - meanVal) * 100) / HELIRANGE;
-        if (g_heliAltPercentage < 0)
+        g_alt_current = ((heliAltMin - meanVal) * 100) / HELIRANGE;
+        if (g_alt_current < 0)
         {
-            g_heliAltPercentage = 0;
+            g_alt_current = 0;
         }
-        else if (g_heliAltPercentage > 100)
+        else if (g_alt_current > 100)
         {
-            g_heliAltPercentage = 100;
+            g_alt_current = 100;
         }
 
         if (messcount >= 12)
         {
             messcount = 0;
-            updateFlightData(g_heliAltPercentage, g_yaw, g_tail_duty, g_main_duty);
-
+            updateFlightData(g_alt_current, g_yaw_current, g_tail_duty, g_main_duty);
         }
         messcount++;
 
@@ -110,17 +106,21 @@ int main(void)
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
-        if ((checkButton(UP) == PUSHED) && (desiredAlt < MAX_ALT))
+        if ((checkButton(UP) == PUSHED))
         {
-            desiredAlt += ALT_STEP;
-            main_rot_DC = stepInputAltitude(desiredAlt, g_heliAltPercentage);
-            setMainPWM(200, main_rot_DC);
+            if (g_alt_ref <= 90) {
+                g_alt_ref += ALT_STEP;
+            } else {
+                g_alt_ref = 100;
+            }
         }
-        if ((checkButton(DOWN) == PUSHED) && (desiredAlt > MIN_ALT))
+        if ((checkButton(DOWN) == PUSHED))
         {
-            desiredAlt -= ALT_STEP;
-            main_rot_DC = stepInputAltitude(desiredAlt, g_heliAltPercentage);
-            setMainPWM(200, main_rot_DC);
+            if (g_alt_ref >= 10) {
+                g_alt_ref -= ALT_STEP;
+            } else {
+                g_alt_ref = 0;
+            }
         }
 
         if ((checkButton(LEFT) == PUSHED))
@@ -132,25 +132,7 @@ int main(void)
             //TODO: Order helicopter 15 CW
         }
 
-        if (desiredAlt > MAX_ALT) {
-            desiredAlt = MAX_ALT;
-        }
-        if (desiredAlt < MIN_ALT) {
-            desiredAlt = MIN_ALT;
-        }
-
-        // Re-zero altimeter
-        // if ((checkButton (DOWN) == PUSHED)) {
-        //     resetAltimeter(meanVal);
-        // }
-
         updateButtons();
         SysCtlDelay(SysCtlClockGet() / SYSDISPLAYDIV); // Update display at ~ 4 Hz
     }
 }
-
-// // Utility Functions
-// void resetAltimeter(uint32_t meanVal) {
-//     g_heliAltPercentage = 0;
-//     heliAltMin = meanVal;
-// }

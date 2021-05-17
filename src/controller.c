@@ -4,8 +4,19 @@
 #include "setup.h"
 #include "altitudeADC.h"
 
-uint16_t stepInputAltitude(uint16_t ref, uint16_t current)
+
+int16_t g_yaw_current;
+int16_t g_yaw_ref;
+
+int16_t g_alt_current;
+int16_t g_alt_ref;
+
+uint16_t controllerAltitude(uint16_t ref, uint16_t current)
 {
+    //Update Integral Gain
+    g_intcounter = g_intcounter + (g_heliAltPercentage - g_heliAltSetpoint);
+
+
     float temp;
     float error = ref - current;
 
@@ -17,5 +28,4 @@ uint16_t stepInputAltitude(uint16_t ref, uint16_t current)
 
 void updateIntegralErrorAltitude()
 {
-    g_intcounter = g_intcounter + (g_heliAltPercentage - g_heliAltSetpoint);
 }

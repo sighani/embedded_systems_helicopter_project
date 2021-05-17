@@ -22,7 +22,6 @@
 #include "yaw.h"
 #include "controller.h"
 
-#define PWM_DIVIDER_CODE SYSCTL_PWMDIV_4
 
 static uint32_t g_uartCount;
 static uint8_t g_uartFlag;
@@ -31,9 +30,9 @@ static uint8_t g_uartFlag;
 void SysTickIntHandler(void)
 {
     ADCProcessorTrigger(ADC0_BASE, 3);
-
-    //TODO: Get it to poll error here as well
-    updateIntegralErrorAltitude();
+    
+    
+    //UPDATE PI AND PWM
 
     //    g_ulSampCnt++;
     g_uartCount++;

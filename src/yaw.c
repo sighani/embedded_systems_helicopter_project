@@ -30,7 +30,6 @@
 
 // Global Variables
 //uint32_t g_ulSampCnt;    // Counter for the interrupts
-int16_t g_yaw;
 
 static int16_t yaw_ref;
 static uint8_t currentState = 0;
@@ -56,17 +55,17 @@ void YawIntHandler(void)
     bufferState = currentState | (previousState << 2); // 0000 YYXX Y = Previous State, X = Current State
     //these are done so that ascending order is clockwise assuming sensor moves relative to gears as said in lecture notes
 
-    g_yaw = g_yaw + increment[bufferState];
+    g_yaw_current = g_yaw_current + increment[bufferState];
 
     // Remove drift on Test Rig.
 
-    if (g_yaw < 0)
+    if (g_yaw_current < 0)
     {
-        g_yaw = ((TEETH_NUM * 4) - 1);
+        g_yaw_current = ((TEETH_NUM * 4) - 1);
     }
-    else if (g_yaw > ((TEETH_NUM * 4) - 1))
+    else if (g_yaw_current > ((TEETH_NUM * 4) - 1))
     {
-        g_yaw = 0;
+        g_yaw_current = 0;
     }
 }
 
@@ -74,13 +73,13 @@ void YawIntHandler(void)
 void yawRefIntHandler(void)
 {
     // calculate and remove drift
-    if (abs(g_yaw) > (TEETH_NUM * 4))
+    if (abs(g_yaw_current) > (TEETH_NUM * 4))
     {
-        g_yaw = g_yaw + ((g_yaw % (TEETH_NUM * 4)) - yaw_ref);
+        g_yaw_current = g_yaw_current + ((g_yaw_current % (TEETH_NUM * 4)) - yaw_ref);
     }
     else
     {
-        yaw_ref = g_yaw;
+        yaw_ref = g_yaw_current;
     }
 }
 
