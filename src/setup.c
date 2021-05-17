@@ -24,7 +24,7 @@
 
 
 static uint32_t g_uartCount;
-static uint8_t g_uartFlag;
+uint8_t g_uartFlag;
 
 // Interrupts
 void SysTickIntHandler(void)

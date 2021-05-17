@@ -15,10 +15,10 @@
 
 #define TEETHINDEG ((10 * 360) / (TEETH_NUM * 4))
 
-void updateFlightData(uint32_t heli_alt, int16_t yaw, uint32_t duty_tail, uint32_t duty_main);
+void updateFlightData(uint32_t heli_alt, int16_t yaw, uint32_t duty_tail, uint32_t duty_main)
 {
     char string[17]; // 16 characters across the display
-    usnprintf(string, sizeof(string), "Alti %3d%%", heliPercentage);
+    usnprintf(string, sizeof(string), "Alti %3d%%", heli_alt);
     OLEDStringDraw(string, 0, 0);
 
     usnprintf(string, sizeof(string), "Yaw: %4d Deg", ((((yaw * TEETHINDEG) / 10) % 360)));

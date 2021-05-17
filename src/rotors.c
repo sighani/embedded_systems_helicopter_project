@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "driverlib/pin_map.h" //Needed for pin configure
 #include "driverlib/gpio.h"

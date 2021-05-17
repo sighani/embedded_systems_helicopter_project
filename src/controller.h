@@ -18,4 +18,4 @@ extern int16_t g_alt_ref;
 
 
 
-#endif // __CONTROLLER_H__
+#endif /* __CONTROLLER_H__ */
