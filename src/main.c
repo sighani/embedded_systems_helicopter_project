@@ -118,7 +118,7 @@ int main(void)
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
-        if ((checkButton(UP) == PUSHED))
+        if ((g_alt_ref < MAX_ALT) && (checkButton(UP) == PUSHED))
         {
             if (g_alt_ref <= (MAX_ALT-ALT_STEP)) {
                 g_alt_ref += ALT_STEP;
@@ -126,7 +126,7 @@ int main(void)
                 g_alt_ref = 100;
             }
         }
-        if ((checkButton(DOWN) == PUSHED))
+        if ((g_alt_ref < MIN_ALT) && (checkButton(DOWN) == PUSHED))
         {
             if (g_alt_ref >= (MIN_ALT+ALT_STEP)) {
                 g_alt_ref -= ALT_STEP;
@@ -135,14 +135,11 @@ int main(void)
             }
         }
 
-        if ((checkButton(LEFT) == PUSHED))
+        if (checkButton(LEFT) == PUSHED)
         {
-            if (g_yaw_ref < YAW_STEP) {
-                g_yaw_ref = 360 - YAW_STEP;
-            }
-
+            g_yaw_ref = (360 + ( g_yaw_ref - YAW_STEP)) % 360;
         }
-        if ((checkButton(RIGHT) == PUSHED))
+        if (checkButton(RIGHT) == PUSHED)
         {
             g_yaw_ref = (( g_yaw_ref + YAW_STEP) % 360);
 

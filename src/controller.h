@@ -1,12 +1,6 @@
 #ifndef __CONTROLLER_H__
 #define __CONTROLLER_H__
 
-#define MKp 10
-#define MKi 0.5
-
-#define TKp 0.1
-#define TKi 0.05
-
 extern float g_intcounterAlt;
 extern float g_intcounterYaw;
 
