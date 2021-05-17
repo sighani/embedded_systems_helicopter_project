@@ -87,7 +87,7 @@ UARTSend (char *pucBuffer)
 void UARTSendHeli (uint8_t yaw, uint8_t desiredYaw, uint16_t tail_DC, uint16_t altitude, uint16_t desiredAlt, uint16_t main_DC) {
     char uartOutput[101];
 
-    usprintf (uartOuput, "YAW = %2d| YAW_DES = %2d TAIL_DC = %2d\r\n "
+    usprintf (uartOutput, "YAW = %2d| YAW_DES = %2d TAIL_DC = %2d\r\n "
                          "ALT = %2d| ALT_DES = %2d MAIN_DC = %2d\r\n ",
               yaw, desiredYaw, tail_DC, altitude, desiredAlt, main_DC);
     UARTSend (uartOutput);

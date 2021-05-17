@@ -6,6 +6,7 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/pwm.h"
+#include "inc/hw_memmap.h"
 
 #include "rotors.h"
 
