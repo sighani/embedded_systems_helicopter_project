@@ -13,12 +13,14 @@
 #include "labcode/buttons4.h"
 #include "../OrbitOLED/OrbitOLEDInterface.h"
 
+
 #include "setup.h"
 #include "altitudeADC.h"
 #include "display.h"
 #include "yaw.h"
 #include "rotors.h"
 #include "controller.h"
+#include "uartUSB.h"
 
 // Maps 2^12 - 1 values to a 3V range. Then calculates bit range for 0.8V
 #define HELIRANGE ((4095 * 8) / 30)
@@ -96,8 +98,15 @@ int main(void)
         {
             messcount = 0;
             updateFlightData(g_heliAltPercentage, g_yaw, g_tail_duty, g_main_duty);
+
         }
         messcount++;
+
+        // Send UART Data at 4Hz. UARTFlag is set every 25 SysTick interrupts (250ms).
+        if (g_uartFlag) {
+            g_uartFlag = 0;
+            UARTSendHeli();
+        }
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
@@ -129,7 +138,6 @@ int main(void)
         if (desiredAlt < MIN_ALT) {
             desiredAlt = MIN_ALT;
         }
-
 
         // Re-zero altimeter
         // if ((checkButton (DOWN) == PUSHED)) {

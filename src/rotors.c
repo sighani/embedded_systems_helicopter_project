@@ -2,7 +2,8 @@
 
 #include "driverlib/pin_map.h" //Needed for pin configure
 #include "driverlib/gpio.h"
-
+#include "driverlib/sysctl.h"
+#include "driverlib/systick.h"
 #include "driverlib/pwm.h"
 
 #include "rotors.h"

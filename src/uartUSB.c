@@ -1,15 +1,10 @@
-//********************************************************
-//
-// uartDemo.c - Example code for ENCE361
-//
-// Link with modules:  buttons2, OrbitOLEDInterface
-//
-//  Created on: 12/05/2021
-//       Authors: Nathaniel Stainton, Saman Ighani, Jack Walsh
-//
-// Author:  P.J. Bones  UCECE
-// Last modified:   16.4.2018
-//
+/*
+ * uartUSB.h
+ *
+ *  Created on: 12/05/2021
+ *      Authors: P.J. Bones  UCECE
+ *      Modified by: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ */
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -89,9 +84,11 @@ UARTSend (char *pucBuffer)
     }
 }
 
-void UARTSendHeli () {
-    char UartOutput[100];
+void UARTSendHeli (uint8_t yaw, uint8_t desiredYaw, uint16_t tail_DC, uint16_t desiredAlt, uint16_t altitude, uint16_t main_DC) {
+    char uartOutput[101];
 
-    usnprintf();
-    UARTSendString(UartOut);
+    usprintf (uartOuput, "YAW = %2d| YAW_DES = %2d TAIL_DC = %2d\r\n "
+                         "ALT = %2d| ALT_DES = %2d MAIN_DC = %2d\r\n ",
+              yaw, desiredYaw, tail_DC, altitude, desiredAlt, main_DC);
+    UARTSend (uartOutput);
 }

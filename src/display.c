@@ -15,7 +15,7 @@
 
 #define TEETHINDEG ((10 * 360) / (TEETH_NUM * 4))
 
-void updateFlightData(uint32_t, heli_alt, int16_t yaw, uint32_t duty_tail, uint32_t duty_main);
+void updateFlightData(uint32_t heli_alt, int16_t yaw, uint32_t duty_tail, uint32_t duty_main);
 {
     char string[17]; // 16 characters across the display
     usnprintf(string, sizeof(string), "Alti %3d%%", heliPercentage);

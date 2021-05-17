@@ -24,6 +24,9 @@
 
 #define PWM_DIVIDER_CODE SYSCTL_PWMDIV_4
 
+static uint32_t g_uartCount;
+static uint8_t g_uartFlag;
+
 // Interrupts
 void SysTickIntHandler(void)
 {
@@ -33,6 +36,12 @@ void SysTickIntHandler(void)
     updateIntegralErrorAltitude();
 
     //    g_ulSampCnt++;
+    g_uartCount++;
+
+    if (g_uartCount >= 25) {
+        g_uartCount = 0;
+        g_uartFlag = 1;
+    }
 }
 
 // Intialisation
