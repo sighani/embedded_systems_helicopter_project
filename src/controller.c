@@ -24,7 +24,7 @@ void controllerAltitude()
 
 
     float plantInput;
-    float error = g_alt_ref - g_intcounterAlt;
+    float error = g_alt_ref - g_alt_current;
 
     plantInput =  (error * Kp) + (Ki * g_intcounterAlt);
     // (Ki * g_intbuff) probably needs to be divided by the frequency of the systick int handler alternatively the gain itsself could just factor it in.
@@ -35,7 +35,7 @@ void controllerAltitude()
     } else if (plantInput < 0) {
         plantInput = 0;
     }
-    setMainPWM(plantInput);
+//    setMainPWM(plantInput);
     g_main_duty = plantInput;
 
 }
@@ -47,7 +47,7 @@ void controllerYaw()
 
 
     float plantInput;
-    float error = g_yaw_ref - g_intcounterYaw;
+    float error = g_yaw_ref - g_alt_current;
 
     plantInput = (error * Kp) + (Ki * g_intcounterYaw);
     // (Ki * g_intbuff) probably needs to be divided by the frequency of the systick int handler alternatively the gain itsself could just factor it in.
@@ -58,7 +58,7 @@ void controllerYaw()
     } else if (plantInput < 0) {
         plantInput = 0;
     }
-    setTailPWM(plantInput);
+//    setTailPWM(plantInput);
     g_tail_duty = plantInput;
 
 }

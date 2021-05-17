@@ -28,8 +28,12 @@
 #define HELIRANGE ((4095 * 8) / 30)
 #define SYSDISPLAYDIV 150
 #define ALT_STEP 10
-#define MAX_ALT 0
-#define MIN_ALT 100
+#define MAX_ALT 100
+#define MIN_ALT 0
+
+#define YAW_STEP 15
+#define MAX_YAW 360
+
 
 
 uint16_t heliAltMax;
@@ -103,20 +107,20 @@ int main(void)
         if (messcount >= 12)
         {
             messcount = 0;
-            updateFlightData(g_alt_current, g_yaw_current, g_tail_duty, g_main_duty);
+            updateFlightData(g_alt_current, g_yaw_current, g_tail_duty, g_main_duty, g_alt_ref, g_yaw_ref);
         }
         messcount++;
 
-        if (g_uartFlag) {
-            g_uartFlag = 0;
-            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
-        }
+//        if (g_uartFlag) {
+//            g_uartFlag = 0;
+////            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
+//        }
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
         if ((checkButton(UP) == PUSHED))
         {
-            if (g_alt_ref <= 90) {
+            if (g_alt_ref <= (MAX_ALT-ALT_STEP)) {
                 g_alt_ref += ALT_STEP;
             } else {
                 g_alt_ref = 100;
@@ -124,7 +128,7 @@ int main(void)
         }
         if ((checkButton(DOWN) == PUSHED))
         {
-            if (g_alt_ref >= 10) {
+            if (g_alt_ref >= (MIN_ALT+ALT_STEP)) {
                 g_alt_ref -= ALT_STEP;
             } else {
                 g_alt_ref = 0;
@@ -133,11 +137,15 @@ int main(void)
 
         if ((checkButton(LEFT) == PUSHED))
         {
-            //TODO: Order helicopter 15 CCW
+            if (g_yaw_ref < YAW_STEP) {
+                g_yaw_ref = 360 - YAW_STEP;
+            }
+
         }
         if ((checkButton(RIGHT) == PUSHED))
         {
-            //TODO: Order helicopter 15 CW
+            g_yaw_ref = (( g_yaw_ref + YAW_STEP) % 360);
+
         }
 
         updateButtons();

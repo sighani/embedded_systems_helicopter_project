@@ -8,6 +8,6 @@
 #ifndef SRC_DISPLAY_H_
 #define SRC_DISPLAY_H_
 
-void updateFlightData(uint32_t heli_alt, int16_t yaw, uint16_t duty_tail, uint16_t duty_main);
+void updateFlightData(uint32_t heli_alt, int16_t yaw, uint16_t duty_tail, uint16_t duty_main, int16_t alt_ref, int16_t tail_ref);
 
 #endif /* SRC_DISPLAY_H_ */
