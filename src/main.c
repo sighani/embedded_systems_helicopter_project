@@ -18,10 +18,15 @@
 #include "display.h"
 #include "yaw.h"
 #include "rotors.h"
+#include "controller.h"
 
 // Maps 2^12 - 1 values to a 3V range. Then calculates bit range for 0.8V
 #define HELIRANGE ((4095 * 8) / 30)
 #define SYSDISPLAYDIV 150
+#define ALT_STEP 10
+#define MAX_ALT 0
+#define MIN_ALT 100
+
 
 //Function Declarations
 void resetAltimeter(uint32_t meanVal);
@@ -45,6 +50,9 @@ int main(void)
     initCircBuf(&g_inBuffer, BUF_SIZE);
     initDisplay();
     g_yaw = 0;
+
+    uint8_t desiredAlt = 0;
+    uint16_t main_rot_DC = 0;
 
     enableRotors();
 
@@ -93,13 +101,17 @@ int main(void)
 
         //TODO: Add logic for moving altitude up and down, need to use controller.c function and setpwm through pwm.c, these are then called in button up and down, have #defines to set altitude steps
         // Button Logic
-        if ((checkButton(UP) == PUSHED))
+        if ((checkButton(UP) == PUSHED) && (desiredAlt < MAX_ALT))
         {
-            //TODO: Order helicopter up
+            desiredAlt += ALT_STEP;
+            main_rot_DC = stepInputAltitude(desiredAlt, g_heliAltPercentage);
+            setMainPWM(200, main_rot_DC);
         }
-        if ((checkButton(DOWN) == PUSHED))
+        if ((checkButton(DOWN) == PUSHED) && (desiredAlt > MIN_ALT))
         {
-            //TODO: Order helicopter down
+            desiredAlt -= ALT_STEP;
+            main_rot_DC = stepInputAltitude(desiredAlt, g_heliAltPercentage);
+            setMainPWM(200, main_rot_DC);
         }
 
         if ((checkButton(LEFT) == PUSHED))
@@ -110,6 +122,14 @@ int main(void)
         {
             //TODO: Order helicopter 15 CW
         }
+
+        if (desiredAlt > MAX_ALT) {
+            desiredAlt = MAX_ALT;
+        }
+        if (desiredAlt < MIN_ALT) {
+            desiredAlt = MIN_ALT;
+        }
+
 
         // Re-zero altimeter
         // if ((checkButton (DOWN) == PUSHED)) {
