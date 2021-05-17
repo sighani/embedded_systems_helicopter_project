@@ -24,6 +24,6 @@ void updateFlightData(uint32_t heli_alt, int16_t yaw, uint16_t duty_tail, uint16
     usnprintf(string, sizeof(string), "Yaw: %4d Deg", ((((yaw * TEETHINDEG) / 10) % 360)));
     OLEDStringDraw(string, 0, 1);
 
-    usnprintf(string, sizeof(string), "M:%3%% T:%3%%", duty_main, duty_tail);
+    usnprintf(string, sizeof(string), "M:%3d%% T:%3d%%", duty_main, duty_tail);
     OLEDStringDraw(string, 0, 2);
 }

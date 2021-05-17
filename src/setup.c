@@ -31,7 +31,7 @@ void SysTickIntHandler(void)
     ADCProcessorTrigger(ADC0_BASE, 3);
     
     controllerAltitude();
-    
+    controllerYaw();
     //    g_ulSampCnt++;
     g_uartCount++;
 
