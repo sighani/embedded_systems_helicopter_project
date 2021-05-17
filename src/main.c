@@ -50,16 +50,13 @@ int main(void)
     initClock();
     initMainRotor();
     initTailRotor();
+
     initADC();
     initYaw();
     initCircBuf(&g_inBuffer, BUF_SIZE);
     initDisplay();
 
-
     g_yaw_current = 0;
-    g_intcounter = 0.00;
-    g_main_duty = 0;
-    g_tail_duty = 0;
 
     enableRotors();
 

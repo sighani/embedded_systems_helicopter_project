@@ -12,9 +12,9 @@ void initTailRotor();
 
 void enableRotors();
 
-void setMainPWM(uint32_t ui32Freq, uint32_t ui32Duty);
+void setMainPWM(uint32_t ui32Duty);
 
-void setTailPWM(uint32_t ui32Freq, uint32_t ui32Duty);
+void setTailPWM(uint32_t ui32Duty);
 
 extern uint16_t g_main_duty;
 extern uint16_t g_tail_duty;
