@@ -1,9 +1,9 @@
 #include <stdint.h>
 
 #include "controller.h"
+#include "rotors.h"
 #include "setup.h"
 #include "altitudeADC.h"
-#include "rotors.h"
 
 
 int16_t g_yaw_current;
@@ -11,6 +11,11 @@ int16_t g_yaw_ref;
 
 int16_t g_alt_current;
 int16_t g_alt_ref;
+
+uint16_t g_main_duty;
+uint16_t g_tail_duty;
+
+float g_intcounter;
 
 #define PWM_FREQ 200
 
@@ -33,6 +38,8 @@ void controllerAltitude()
         plantInput = 0;
     }
     setMainPWM(PWM_FREQ,plantInput);
+    g_main_duty = plantInput;
+    g_tail_duty = plantInput;
 
 }
 
