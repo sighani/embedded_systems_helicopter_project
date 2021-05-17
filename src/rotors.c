@@ -1,6 +1,7 @@
 #include <stdint.h>
-
+#include <stdbool.h>
 #include "driverlib/pin_map.h" //Needed for pin configure
+#include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
@@ -21,7 +22,7 @@
 #define PWM_MAIN_GPIO_PIN GPIO_PIN_5
 
 #define PWM_TAIL_BASE PWM1_BASE
-#define PWM_TAIL_GEN PWM_GEN_3
+#define PWM_TAIL_GEN PWM_GEN_2
 #define PWM_TAIL_OUTNUM PWM_OUT_5
 #define PWM_TAIL_OUTBIT PWM_OUT_5_BIT
 #define PWM_TAIL_PERIPH_PWM SYSCTL_PERIPH_PWM1
@@ -34,10 +35,13 @@
 #define PWM_INIT_DUTY 50
 #define PWM_DIVIDER 4
 
+uint16_t g_main_duty;
+uint16_t g_tail_duty;
+
 void initMainRotor(void)
 {
-    SysCtlPeripheralReset(PWM_MAIN_PERIPH_GPIO);
-    SysCtlPeripheralReset(PWM_MAIN_PERIPH_PWM);
+//    SysCtlPeripheralReset(PWM_MAIN_PERIPH_GPIO);
+//    SysCtlPeripheralReset(PWM_MAIN_PERIPH_PWM);
 
     SysCtlPeripheralEnable(PWM_MAIN_PERIPH_PWM);
     SysCtlPeripheralEnable(PWM_MAIN_PERIPH_GPIO);
@@ -47,17 +51,17 @@ void initMainRotor(void)
 
     PWMGenConfigure(PWM_MAIN_BASE, PWM_MAIN_GEN,
                     PWM_GEN_MODE_UP_DOWN | PWM_GEN_MODE_NO_SYNC);
-    setMainPWM(PWM_FREQ, PWM_INIT_DUTY);
+    setMainPWM(PWM_INIT_DUTY);
 
     PWMGenEnable(PWM_MAIN_BASE, PWM_MAIN_GEN);
 
     PWMOutputState(PWM_MAIN_BASE, PWM_MAIN_OUTBIT, false);
 }
 
-void initMainRotor()
+void initTailRotor(void)
 {
-    SysCtlPeripheralReset(PWM_TAIL_PERIPH_GPIO); // Used for PWM output
-    SysCtlPeripheralReset(PWM_TAIL_PERIPH_PWM);  // Main Rotor PWM
+//    SysCtlPeripheralReset(PWM_TAIL_PERIPH_GPIO); // Used for PWM output
+//    SysCtlPeripheralReset(PWM_TAIL_PERIPH_PWM);  // Main Rotor PWM
 
     SysCtlPeripheralEnable(PWM_TAIL_PERIPH_PWM);
     SysCtlPeripheralEnable(PWM_TAIL_PERIPH_GPIO);
@@ -68,7 +72,7 @@ void initMainRotor()
     PWMGenConfigure(PWM_TAIL_BASE, PWM_TAIL_GEN,
                     PWM_GEN_MODE_UP_DOWN | PWM_GEN_MODE_NO_SYNC);
     // Set the initial PWM parameters
-    setMainPWM(PWM_FREQ, PWM_INIT_DUTY);
+    setTailPWM(PWM_INIT_DUTY);
 
     PWMGenEnable(PWM_TAIL_BASE, PWM_TAIL_GEN);
 
@@ -76,31 +80,31 @@ void initMainRotor()
     PWMOutputState(PWM_TAIL_BASE, PWM_TAIL_OUTBIT, false);
 }
 
-void enableRotors()
+void enableRotors(void)
 {
     // Initialisation is complete, so turn on the output.
     PWMOutputState(PWM_MAIN_BASE, PWM_MAIN_OUTBIT, true);
     PWMOutputState(PWM_TAIL_BASE, PWM_TAIL_OUTBIT, true);
 }
 
-void setMainPWM(uint32_t ui32Freq, uint32_t ui32Duty)
+void setMainPWM(uint32_t ui32Duty)
 {
     g_main_duty = ui32Duty;
     // Calculate the PWM period corresponding to the freq.
     uint32_t ui32Period =
-        SysCtlClockGet() / PWM_DIVIDER / ui32Freq;
+        SysCtlClockGet() / PWM_DIVIDER / PWM_FREQ;
 
     PWMGenPeriodSet(PWM_MAIN_BASE, PWM_MAIN_GEN, ui32Period);
     PWMPulseWidthSet(PWM_MAIN_BASE, PWM_MAIN_OUTNUM,
                      ui32Period * ui32Duty / 100);
 }
 
-void setTailPWM(uint32_t ui32Freq, uint32_t ui32Duty)
+void setTailPWM(uint32_t ui32Duty)
 {
     g_tail_duty = ui32Duty;
     // Calculate the PWM period corresponding to the freq.
     uint32_t ui32Period =
-        SysCtlClockGet() / PWM_DIVIDER / ui32Freq;
+        SysCtlClockGet() / PWM_DIVIDER / PWM_FREQ;
 
     PWMGenPeriodSet(PWM_TAIL_BASE, PWM_TAIL_GEN, ui32Period);
     PWMPulseWidthSet(PWM_TAIL_BASE, PWM_TAIL_OUTNUM,

@@ -21,10 +21,9 @@
 #include "altitudeADC.h"
 #include "yaw.h"
 #include "controller.h"
+#include "uartUSB.h"
 
-
-static uint32_t g_uartCount;
-static uint8_t g_uartFlag;
+#define PWM_DIVIDER_CODE SYSCTL_PWMDIV_4
 
 // Interrupts
 void SysTickIntHandler(void)
@@ -32,11 +31,11 @@ void SysTickIntHandler(void)
     ADCProcessorTrigger(ADC0_BASE, 3);
     
     controllerAltitude();
-    
+    controllerYaw();
     //    g_ulSampCnt++;
     g_uartCount++;
 
-    if (g_uartCount >= 25) {
+    if (g_uartCount >= 100) {
         g_uartCount = 0;
         g_uartFlag = 1;
     }

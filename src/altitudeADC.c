@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "labcode/circBufT.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
@@ -17,6 +18,7 @@
 //#include "inc/tm4c123gh6pm.h"
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
+#include "altitudeADC.h"
 
 // Constants
 #define BUF_SIZE 50

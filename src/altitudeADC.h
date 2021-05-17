@@ -8,6 +8,8 @@
 #ifndef SRC_ALTITUDEADC_H_
 #define SRC_ALTITUDEADC_H_
 
+#include "labcode/circBufT.h"
+
 // Constants
 #define BUF_SIZE 50
 #define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this is being done at 500hz

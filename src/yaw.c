@@ -16,6 +16,8 @@
 //#include "inc/tm4c123gh6pm.h"
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
+#include "controller.h"
+
 
 // Constants
 #define YAWI_1 GPIO_INT_PIN_0
