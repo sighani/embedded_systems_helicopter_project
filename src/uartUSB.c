@@ -34,8 +34,7 @@
 #define UART_USB_GPIO_PIN_TX    GPIO_PIN_1
 #define UART_USB_GPIO_PINS      UART_USB_GPIO_PIN_RX | UART_USB_GPIO_PIN_TX
 
-uint32_t g_uartCount;
-uint8_t g_uartFlag;
+uint8_t g_uartCount;
 
 //********************************************************
 // initialiseUSB_UART - 8 bits, 1 stop bit, no parity
