@@ -23,6 +23,7 @@
 #include "rotors.h"
 #include "controller.h"
 #include "uartUSB.h"
+#include "takeoff.h"
 
 // Maps 2^12 - 1 values to a 3V range. Then calculates bit range for 0.8V
 #define HELIRANGE ((4095 * 8) / 30)
@@ -62,6 +63,8 @@ int main(void)
     initCircBuf(&g_inBuffer, BUF_SIZE);
     initDisplay();
     initialiseUSB_UART();
+    initSwitchInt();
+    initFSM();
 
 
     g_yaw_current = 0;
@@ -144,8 +147,6 @@ int main(void)
             g_yaw_ref = (( g_yaw_ref + YAW_STEP) % 360);
 
         }
-
         updateButtons();
-        SysCtlDelay(SysCtlClockGet() / SYSDISPLAYDIV); // Update display at ~ 4 Hz
     }
 }
