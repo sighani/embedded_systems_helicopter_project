@@ -30,6 +30,8 @@
 
 #define TEETH_NUM 112
 
+#define TEETHINDEG ((10 * 360) / (TEETH_NUM * 4))
+
 // Global Variables
 //uint32_t g_ulSampCnt;    // Counter for the interrupts
 

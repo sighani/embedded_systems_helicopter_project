@@ -32,7 +32,7 @@
 #define PWM_TAIL_GPIO_PIN GPIO_PIN_1
 
 #define PWM_FREQ 200
-#define PWM_INIT_DUTY 65
+#define PWM_INIT_DUTY 0
 #define PWM_DIVIDER 4
 
 uint16_t g_main_duty;
