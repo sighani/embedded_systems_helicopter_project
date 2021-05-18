@@ -19,7 +19,7 @@
 
 void SwitchIntHandler(void)
 {
-    GPIOIntClear(GPIO_PORTA_BASE, GPIO_PIN_7);
+//    GPIOIntClear(GPIO_PORTA_BASE, GPIO_PIN_7);
 
     //if not in process of landing
         //if flying
@@ -39,12 +39,12 @@ void SwitchIntHandler(void)
 
 void SwitchIntInit(void)
 {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    GPIOIntRegister(GPIO_PORTA_BASE, SwitchIntHandler);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA,
-    GPIO_PIN_TYPE_STD_WPU);
-    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_BOTH_EDGES);
-    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_7);
-    switchState = 0;
+//    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+//    GPIOIntRegister(GPIO_PORTA_BASE, SwitchIntHandler);
+//    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA,
+//    GPIO_PIN_TYPE_STD_WPU);
+//    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_BOTH_EDGES);
+//    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_7);
+//    switchState = 0;
 
 }

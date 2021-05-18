@@ -103,21 +103,21 @@ void initYaw(void)
 
     // ONLY WORKS ON HELICOPTER. TEST RIGS DO NOT HAVE A REF PIN.
     //reference pin init
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
-    while (!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC))
-    {
-        continue;
-    }
-    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
-    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-
-    //Int Priorities
-    //    IntPrioritySet(INT_GPIOC, 0x20);
-    //    IntPrioritySet(INT_GPIOB, 0x60);
-
-    //reference pin interrupt
-    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
-    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
-    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
+//    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+//    while (!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC))
+//    {
+//        continue;
+//    }
+//    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
+//    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
+//                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+//
+//    //Int Priorities
+//    //    IntPrioritySet(INT_GPIOC, 0x20);
+//    //    IntPrioritySet(INT_GPIOB, 0x60);
+//
+//    //reference pin interrupt
+//    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
+//    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
+//    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
 }

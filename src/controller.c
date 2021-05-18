@@ -5,7 +5,7 @@
 #include "setup.h"
 #include "altitudeADC.h"
 
-#define MKp 10
+#define MKp 1.05
 #define MKi 0.5
 
 #define TKp 0.1
@@ -17,6 +17,8 @@ int16_t g_yaw_ref;
 int16_t g_alt_current;
 int16_t g_alt_ref;
 
+int8_t g_altControllerTrigger;
+int8_t g_yawControllerTrigger;
 
 float g_intcounterAlt;
 float g_intcounterYaw;
@@ -36,8 +38,8 @@ void controllerAltitude()
     //Clamp output
     if (plantInput > 98) {
         plantInput = 98;
-    } else if (plantInput < 10) {
-        plantInput = 15;
+    } else if (plantInput < 2) {
+        plantInput = 2;
     }
     setMainPWM(plantInput);
 
