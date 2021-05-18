@@ -126,7 +126,16 @@ int main(void)
         displayCounter++;
 
 
-        if (buttonCounter >= 0) {
+        if (g_heliState == CALIBRATE) {
+            g_inputDisabled = 1;
+            uint8_t power = 0;
+            g_alt_ref = 1;
+            g_yaw_ref = 180;
+        }
+
+
+
+        if (buttonCounter >= 0 && !g_inputDisabled) {
             buttonCounter = 0;
             // Button Logic
             if ((checkButton(UP) == PUSHED) && (g_alt_ref < MAX_ALT)) {
