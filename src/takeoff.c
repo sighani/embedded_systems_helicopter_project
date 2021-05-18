@@ -38,8 +38,6 @@ void switchIntHandler(void)
     }
 
 
-
-
     pinpreviousState = g_heliState;
 
 //    if (heliState != landing)
@@ -65,6 +63,4 @@ void initSwitchInt(void)
                      GPIO_PIN_TYPE_STD_WPD);
     GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_BOTH_EDGES);
     GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_7);
-
-}
 

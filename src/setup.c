@@ -29,16 +29,22 @@
 void SysTickIntHandler(void)
 {
     ADCProcessorTrigger(ADC0_BASE, 3);
-    
-    controllerAltitude();
-    controllerYaw();
-    //    g_ulSampCnt++;
-    g_uartCount++;
 
-    if (g_uartCount >= 100) {
-        g_uartCount = 0;
-        g_uartFlag = 1;
+//    controllerYaw();
+
+    if (g_altControllerTrigger >= 10) {
+        g_altControllerTrigger = 0;
+        controllerAltitude();
+        controllerYaw();
     }
+    g_altControllerTrigger++;
+
+
+    //    g_uartCount++;
+//    if (g_uartCount >= 100) {
+//        g_uartCount = 0;
+//        g_uartFlag = 1;
+//    }
 }
 
 // Intialisation
