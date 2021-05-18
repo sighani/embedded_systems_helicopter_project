@@ -32,9 +32,10 @@ void SysTickIntHandler(void)
 
 //    controllerYaw();
 
-    if (g_altControllerTrigger >= 40) {
+    if (g_altControllerTrigger >= 10) {
         g_altControllerTrigger = 0;
         controllerAltitude();
+        controllerYaw();
     }
     g_altControllerTrigger++;
 

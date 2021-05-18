@@ -66,8 +66,6 @@ int main(void)
     initialiseUSB_UART();
 
 
-    g_yaw_current = 0;
-
     enableRotors();
 
     //  Enable ISPs
@@ -154,6 +152,18 @@ int main(void)
             }
             updateButtons();
         }
+        if (checkButton(LEFT) == PUSHED)
+        {
+//            g_setpoint_change = 1;
+            g_yaw_ref = (( g_yaw_ref + YAW_STEP) % 360);
+
+        }
+
+
+        if (checkButton(RIGHT) == PUSHED)
+        {
+//            g_setpoint_change = 1;
+            g_yaw_ref = (360 + ( g_yaw_ref - YAW_STEP)) % 360;
         buttonCounter++;
 
         if (g_uartCount >= 100) {
