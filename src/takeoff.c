@@ -34,13 +34,20 @@ void switchIntHandler(void)
 {
     GPIOIntClear(GPIO_PORTA_BASE, GPIO_PIN_7);
     pinState = (GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_7) >> 7);
-    flyingState local = g_heliState;
-    if (g_heliState == GROUNDED && (!pinpreviousState)) {
-        g_heliState = CALIBRATE;
-    }
-    pinpreviousState = g_heliState;
 
-//    if (heliState != landing)
+    flyingState local = g_heliState;
+    if (g_heliState != LANDING) {
+        if (g_heliState == GROUNDED && (!pinpreviousState)) {
+            g_heliState = CALIBRATE;
+        } else if (g_heliState != GROUNDED && pinpreviousState) {
+            g_heliState = LANDING;
+        }
+    }
+    pinpreviousState = pinState;
+
+
+
+//    if (heliState != landing && )
 //    {
 //        if (heliState == grounded && GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_7) == GPIO_PIN_7)
 //        {

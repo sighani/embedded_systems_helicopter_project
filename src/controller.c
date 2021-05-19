@@ -10,7 +10,7 @@
 #define MKi 0.1
 
 #define TKp 0.5
-#define TKi 3.8
+#define TKi 0.01
 
 #define TEETH_NUM 112
 

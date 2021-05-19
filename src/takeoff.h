@@ -14,6 +14,7 @@ typedef enum flyingState{GROUNDED, LANDING, FLYING, CALIBRATE} flyingState;
 void initFSM();
 void initSwitchInt(void);
 void switchIntHandler(void);
+void setHeliState(flyingState heliState);
 
 
 extern flyingState g_heliState;

@@ -78,22 +78,22 @@ void YawIntHandler(void)
 //ONLY WORKS ON HELICOPTER
 void yawRefIntHandler(void)
 {
-    //GPIOIntClear (GPIO_PORTC_BASE, YAW_REF);
-    //if(g_helistate == CALIBRATE) {
-        //if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
-            //absyawref = g_yaw_current;
-            //g_yaw_ref = absyawref;
-            //g_yaw_current = 0;
-            //setHeliState(FLYING);
-        //}
+    GPIOIntClear (GPIO_PORTC_BASE, YAW_REF);
+    if(g_heliState == CALIBRATE) {
+        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
+            absyawref = g_yaw_current;
+            g_yaw_ref = absyawref;
+            g_yaw_current = 0;
+            setHeliState(FLYING);
+        }
 
-    //} else if (g_helistate == LANDING) {
-       // if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
-          //  absyawref = g_yaw_current;
-         //   g_yaw_ref = absyawref;
-         //   g_yaw_current = 0;
-        //    setHeliState(GROUNDED);
-        //}
+    } else if (g_heliState == LANDING) {
+        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
+            absyawref = g_yaw_current;
+            g_yaw_ref = absyawref;
+            g_yaw_current = 0;
+            setHeliState(GROUNDED);
+        }
     }
 // set a absyawref variable to g yaw current. absyawref is NOT g_yaw_ref
 //    set g_yaw_ref to absyawref

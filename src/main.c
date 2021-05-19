@@ -166,10 +166,10 @@ int main(void)
         }
         buttonCounter++;
 
-        if (g_uartCount >= 100) {
-            g_uartCount = 0;
-            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
-        }
-        g_uartCount++;
+        //if (g_uartCount >= 100) {
+            //g_uartCount = 0;
+            //UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
+        //}
+        //g_uartCount++;
     }
 }
