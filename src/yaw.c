@@ -17,6 +17,7 @@
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
 #include "controller.h"
+#include "takeoff.h"
 
 
 // Constants
@@ -36,6 +37,7 @@
 //uint32_t g_ulSampCnt;    // Counter for the interrupts
 
 static int16_t yaw_ref;
+static int16_t absyawref;
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
 
@@ -76,15 +78,26 @@ void YawIntHandler(void)
 //ONLY WORKS ON HELICOPTER
 void yawRefIntHandler(void)
 {
-    // calculate and remove drift
-    if (abs(g_yaw_current) > (TEETH_NUM * 4))
-    {
-        g_yaw_current = g_yaw_current + ((g_yaw_current % (TEETH_NUM * 4)) - yaw_ref);
+    GPIOIntClear (GPIO_PORTC_BASE, YAW_REF);
+    if(g_heliState == CALIBRATE) {
+        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
+            absyawref = g_yaw_current;
+            g_yaw_ref = absyawref;
+            g_yaw_current = 0;
+            setHeliState(FLYING);
+        }
+
+    } else if (g_heliState == LANDING) {
+        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
+            absyawref = g_yaw_current;
+            g_yaw_ref = absyawref;
+            g_yaw_current = 0;
+            setHeliState(GROUNDED);
+        }
     }
-    else
-    {
-        yaw_ref = g_yaw_current;
-    }
+// set a absyawref variable to g yaw current. absyawref is NOT g_yaw_ref
+//    set g_yaw_ref to absyawref
+
 }
 
 void initYaw(void)

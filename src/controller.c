@@ -4,12 +4,13 @@
 #include "rotors.h"
 #include "setup.h"
 #include "altitudeADC.h"
+#include "takeoff.h"
 
-#define MKp 0.5
-#define MKi 0.01
+#define MKp 1.9
+#define MKi 0.1
 
-#define TKp 1.0
-#define TKi 0.06
+#define TKp 2.1
+#define TKi 0.5
 
 #define TEETH_NUM 112
 
@@ -45,7 +46,7 @@ void controllerAltitude()
     //Clamp output
     if (plantInput > 98) {
         plantInput = 98;
-    } else if (plantInput < 2) {
+    } else if (plantInput < 2 && g_heliState != GROUNDED) {
         plantInput = 2;
     }
     setMainPWM(plantInput);
