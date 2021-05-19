@@ -20,7 +20,7 @@
 #include "utils/ustdlib.h"
 #include "stdio.h"
 #include "stdlib.h"
-
+#include "takeoff.h"
 //********************************************************
 // Constants
 //********************************************************
@@ -34,7 +34,7 @@
 #define UART_USB_GPIO_PIN_TX    GPIO_PIN_1
 #define UART_USB_GPIO_PINS      UART_USB_GPIO_PIN_RX | UART_USB_GPIO_PIN_TX
 
-uint8_t g_uartCount;
+uint16_t g_uartCount;
 
 //********************************************************
 // initialiseUSB_UART - 8 bits, 1 stop bit, no parity
@@ -77,11 +77,12 @@ UARTSend (char *pucBuffer)
     }
 }
 
-void UARTSendHeli (uint8_t yaw, uint8_t desiredYaw, uint16_t tail_DC, uint16_t desiredAlt, uint16_t altitude, uint16_t main_DC) {
+void UARTSendHeli (int16_t yaw, int16_t desiredYaw, uint16_t tail_DC, int16_t desiredAlt, int16_t altitude, uint16_t main_DC, flyingState heliMode) {
     char uartOutput[200];
 
-    usprintf (uartOutput, "YAW = %2d| YAW_DES = %2d TAIL_DC = %2d "
-                         "ALT = %2d| ALT_DES = %2d MAIN_DC = %2d\r\n ",
-              yaw, desiredYaw, tail_DC, altitude, desiredAlt, main_DC);
+    usprintf (uartOutput, "YAW = %4d Deg| YAW_DES: %4d Deg TAIL_DC = %2d "
+                          "ALT = %3d%%| ALT_DES = %3d%% MAIN_DC = %2d MODE = %d\r\n "
+                          ,
+              yaw, desiredYaw, tail_DC, altitude, desiredAlt, main_DC, (uint8_t)heliMode);
     UARTSend (uartOutput);
 }

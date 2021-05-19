@@ -77,7 +77,7 @@ int main(void)
     while (1)
     {
 
-        if (circBufferCounter >= 0) {
+        if (circBufferCounter >= 15) {
             circBufferCounter = 0;
             // Taken from ADCDemo.c Lab3
             // Background task: calculate the (approximate) mean of the values in the
@@ -91,7 +91,7 @@ int main(void)
         }
         circBufferCounter++;
 
-        if (altInitCounter >= 0) {
+        if (altInitCounter >= 15) {
             altInitCounter = 0;
             // Run on first start up
             if (initFlag && meanVal > 500)
@@ -103,7 +103,7 @@ int main(void)
         }
         altInitCounter++;
 
-        if (currentAltitudeCounter >= 0) {
+        if (currentAltitudeCounter >= 15) {
             currentAltitudeCounter = 0;
             // Calculate alititude as percentage with cut offs
             g_alt_current = ((heliAltMin - meanVal) * 100) / HELIRANGE;
@@ -135,7 +135,7 @@ int main(void)
 
 
 
-        if (buttonCounter >= 0 && !g_inputDisabled) {
+        if (buttonCounter >= 20 && !g_inputDisabled) {
             buttonCounter = 0;
             // Button Logic
             if ((checkButton(UP) == PUSHED) && (g_alt_ref < MAX_ALT)) {
@@ -166,10 +166,10 @@ int main(void)
         }
         buttonCounter++;
 
-        //if (g_uartCount >= 100) {
-            //g_uartCount = 0;
-            //UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty);
-        //}
-        //g_uartCount++;
+        if (g_uartCount >= 500) {
+            g_uartCount = 0;
+            UARTSendHeli(g_yaw_current, g_yaw_ref, g_tail_duty, g_alt_ref, g_alt_current, g_main_duty, g_heliState);
+        }
+        g_uartCount++;
     }
 }

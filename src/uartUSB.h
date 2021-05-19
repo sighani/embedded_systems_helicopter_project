@@ -18,13 +18,14 @@
 #define UART_USB_GPIO_PIN_TX    GPIO_PIN_1
 #define UART_USB_GPIO_PINS      UART_USB_GPIO_PIN_RX | UART_USB_GPIO_PIN_TX
 
+#include "takeoff.h"
 
-extern uint8_t g_uartCount;
+extern uint16_t g_uartCount;
 
 void initialiseUSB_UART (void);
 
 void UARTSend (char *pucBuffer);
 
-void UARTSendHeli (uint8_t yaw, uint8_t yaw_desired, uint16_t tail_DC, uint16_t alt_desired, uint16_t altitude, uint16_t MAIN_DC);
+void UARTSendHeli (int16_t yaw, int16_t yaw_desired, uint16_t tail_DC, int16_t alt_desired, int16_t altitude, uint16_t MAIN_DC, flyingState heliMode);
 
 #endif /* SRC_UARTUSB_H_ */
