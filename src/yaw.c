@@ -80,20 +80,11 @@ void yawRefIntHandler(void)
 {
     GPIOIntClear (GPIO_PORTC_BASE, YAW_REF);
     if(g_heliState == CALIBRATE) {
-        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
-            absyawref = g_yaw_current;
-            g_yaw_ref = absyawref;
-            g_yaw_current = 0;
-            setHeliState(FLYING);
-        }
+        absyawref = g_yaw_current;
+        g_yaw_ref = absyawref;
+        g_yaw_current = 0;
+        setHeliState(FLYING);
 
-    } else if (g_heliState == LANDING) {
-        if (GPIOPinRead(GPIO_PORTC_BASE, YAW_REF) == YAW_REF) {
-            absyawref = g_yaw_current;
-            g_yaw_ref = absyawref;
-            g_yaw_current = 0;
-            setHeliState(GROUNDED);
-        }
     }
 // set a absyawref variable to g yaw current. absyawref is NOT g_yaw_ref
 //    set g_yaw_ref to absyawref
@@ -123,16 +114,16 @@ void initYaw(void)
 //    {
 //        continue;
 //    }
-//    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
-//    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
-//                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, YAW_REF);
+    GPIOPadConfigSet(GPIO_PORTC_BASE, YAW_REF,
+                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
 //
 //    //Int Priorities
 //    //    IntPrioritySet(INT_GPIOC, 0x20);
 //    //    IntPrioritySet(INT_GPIOB, 0x60);
 //
-//    //reference pin interrupt
-//    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
-//    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
-//    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
+    //reference pin interrupt
+    GPIOIntRegister(GPIO_PORTC_BASE, yawRefIntHandler);
+    GPIOIntTypeSet(GPIO_PORTC_BASE, YAW_REF, GPIO_FALLING_EDGE);
+    GPIOIntEnable(GPIO_PORTC_BASE, YAW_REF);
 }
