@@ -126,12 +126,6 @@ int main(void)
         displayCounter++;
 
 
-        if (g_heliState == CALIBRATE) {
-            g_inputDisabled = 1;
-            g_alt_ref = 1;
-            g_yaw_ref = 180;
-
-        }
 
 
 
@@ -161,6 +155,12 @@ int main(void)
             {
                 g_yaw_ref = (360 + ( g_yaw_ref - YAW_STEP)) % 360;
 
+            }
+
+            if (g_alt_current == 0 && g_alt_ref == 0) {
+                g_heliState = GROUNDED;
+            } else {
+                g_heliState = FLYING;
             }
             updateButtons();
         }

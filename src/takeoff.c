@@ -32,18 +32,18 @@ void setHeliState(flyingState newState)
 
 void switchIntHandler(void)
 {
-    GPIOIntClear(GPIO_PORTA_BASE, GPIO_PIN_7);
-    pinState = (GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_7) >> 7);
+//    GPIOIntClear(GPIO_PORTA_BASE, GPIO_PIN_7);
+//    pinState = (GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_7) >> 7);
 
-    flyingState local = g_heliState;
-    if (g_heliState != LANDING) {
-        if (g_heliState == GROUNDED && (!pinpreviousState)) {
-            g_heliState = CALIBRATE;
-        } else if (g_heliState != GROUNDED && pinpreviousState) {
-            g_heliState = LANDING;
-        }
-    }
-    pinpreviousState = pinState;
+//    flyingState local = g_heliState;
+//    if (g_heliState != LANDING) {
+//        if (g_heliState == GROUNDED && (!pinpreviousState)) {
+//            g_heliState = CALIBRATE;
+//        } else if (g_heliState != GROUNDED && pinpreviousState) {
+//            g_heliState = LANDING;
+//        }
+//    }
+//    pinpreviousState = pinState;
 
 
 
@@ -62,12 +62,12 @@ void switchIntHandler(void)
 
 void initSwitchInt(void)
 {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)){}
-    GPIOPinTypeGPIOInput(GPIO_PORTA_BASE, GPIO_PIN_7);
-    GPIOIntRegister(GPIO_PORTA_BASE, switchIntHandler);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA,
-                     GPIO_PIN_TYPE_STD_WPD);
-    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_BOTH_EDGES);
-    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_7);
+//    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+//    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)){}
+//    GPIOPinTypeGPIOInput(GPIO_PORTA_BASE, GPIO_PIN_7);
+//    GPIOIntRegister(GPIO_PORTA_BASE, switchIntHandler);
+//    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA,
+//                     GPIO_PIN_TYPE_STD_WPD);
+//    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_BOTH_EDGES);
+//    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_7);
 }

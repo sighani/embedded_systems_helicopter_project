@@ -45,6 +45,7 @@ void controllerAltitude()
     plantInput =  (error * MKp) + (MKi * g_intcounterAlt);
     // (Ki * g_intbuff) probably needs to be divided by the frequency of the systick int handler alternatively the gain itsself could just factor it in.
 
+    if (g_heliState != GROUNDED) {
     //Clamp output
     if (plantInput > 98) {
         plantInput = 98;
@@ -52,7 +53,11 @@ void controllerAltitude()
         plantInput = 2;
     }
     setMainPWM(plantInput);
-
+    }
+    else
+    {
+        setMainPWM(0);
+    }
 }
 
 void controllerYaw()
@@ -86,13 +91,16 @@ void controllerYaw()
     plantInput = (error * TKp) + (TKi * g_intcounterYaw);
     // (Ki * g_intbuff) probably needs to be divided by the frequency of the systick int handler alternatively the gain itsself could just factor it in.
 
-    //Clamp output
-    if (plantInput > 98) {
-        plantInput = 98;
-    } else if (plantInput < 2) {
-        plantInput = 2;
+    if (g_heliState != GROUNDED) {
+        //Clamp output
+        if (plantInput > 98) {
+            plantInput = 98;
+        } else if (plantInput < 2) {
+            plantInput = 2;
+        }
+        setTailPWM(plantInput);
+    } else {
+        setTailPWM(0);
     }
-    setTailPWM(plantInput);
-
 }
 
