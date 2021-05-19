@@ -5,11 +5,11 @@
 #include "setup.h"
 #include "altitudeADC.h"
 
-#define MKp 1.7
-#define MKi 0.1
+#define MKp 0.5
+#define MKi 0.01
 
-#define TKp 0.5
-#define TKi 3.8
+#define TKp 1.0
+#define TKi 0.06
 
 #define TEETH_NUM 112
 
