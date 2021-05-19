@@ -128,9 +128,9 @@ int main(void)
 
         if (g_heliState == CALIBRATE) {
             g_inputDisabled = 1;
-            uint8_t power = 0;
             g_alt_ref = 1;
             g_yaw_ref = 180;
+
         }
 
 

@@ -6,15 +6,17 @@
 #include "altitudeADC.h"
 #include "takeoff.h"
 
-#define MKp 1.9
-#define MKi 0.1
+#define MKp 1.8
+#define MKi 0.05
 
-#define TKp 2.1
-#define TKi 0.5
+#define TKp 1.3
+#define TKi 0.7
 
 #define TEETH_NUM 112
 
 #define TEETHINDEG ((10 * 360) / (TEETH_NUM * 4))
+
+#define YAWINTMAX 80
 
 int16_t g_yaw_current;
 int16_t g_yaw_ref;
@@ -73,12 +75,12 @@ void controllerYaw()
 //    error = error * -1;
 //    g_tail_duty = error;
 
-    g_intcounterYaw = g_intcounterYaw + error / 100;
+    g_intcounterYaw = g_intcounterYaw + error / 50;
 
-    if (g_intcounterYaw >= 50) {
-        g_intcounterYaw = 50;
-    } else if (g_intcounterYaw <= -50) {
-        g_intcounterYaw = -50;
+    if (g_intcounterYaw >= YAWINTMAX) {
+        g_intcounterYaw = YAWINTMAX;
+    } else if (g_intcounterYaw <= -1*YAWINTMAX) {
+        g_intcounterYaw = -1*YAWINTMAX;
     }
 
     plantInput = (error * TKp) + (TKi * g_intcounterYaw);
