@@ -1,5 +1,5 @@
 /*
- * display.c
+ * display.h
  *
  *  Created on: 22/04/2021
  *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh

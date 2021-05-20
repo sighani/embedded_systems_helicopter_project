@@ -1,5 +1,5 @@
 /*
- * uartUSB.h
+ * uartUSB.c
  *
  *  Created on: 12/05/2021
  *      Authors: P.J. Bones  UCECE

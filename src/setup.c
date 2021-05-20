@@ -1,5 +1,5 @@
 /*
- * setup.h
+ * setup.c
  *
  *  Created on: 19/03/2021
  *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
