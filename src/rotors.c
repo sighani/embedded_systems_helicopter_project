@@ -1,6 +1,17 @@
+/*
+ * rotors.c
+ *
+ *  Created on: 14/05/2021
+ *      Authors: Nat
+ * 
+ *  Abstracts away PWM generation to give straight forward control.
+ *  TAKEN FROM LABCODE
+ */
+
 #include <stdint.h>
 #include <stdbool.h>
-#include "driverlib/pin_map.h" //Needed for pin configure
+
+#include "driverlib/pin_map.h"
 #include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
@@ -9,8 +20,7 @@
 
 #include "rotors.h"
 
-//  PWM Hardware Details M0PWM7 (gen 3)
-//  ---Main Rotor PWM: PC5, J4-05
+// HW CONFIG
 #define PWM_MAIN_BASE PWM0_BASE
 #define PWM_MAIN_GEN PWM_GEN_3
 #define PWM_MAIN_OUTNUM PWM_OUT_7
@@ -31,17 +41,19 @@
 #define PWM_TAIL_GPIO_CONFIG GPIO_PF1_M1PWM5
 #define PWM_TAIL_GPIO_PIN GPIO_PIN_1
 
+// PWM CONFIG
 #define PWM_FREQ 200
 #define PWM_INIT_DUTY 0
 #define PWM_DIVIDER 4
 
-uint16_t g_main_duty;
-uint16_t g_tail_duty;
+// GLOBAL VARIABLE FOR DUTY CYCLES
+uint16_t g_mainDuty;
+uint16_t g_tailDuty;
 
 void initMainRotor(void)
 {
-//    SysCtlPeripheralReset(PWM_MAIN_PERIPH_GPIO);
-//    SysCtlPeripheralReset(PWM_MAIN_PERIPH_PWM);
+    SysCtlPeripheralReset(PWM_MAIN_PERIPH_GPIO);
+    SysCtlPeripheralReset(PWM_MAIN_PERIPH_PWM);
 
     SysCtlPeripheralEnable(PWM_MAIN_PERIPH_PWM);
     SysCtlPeripheralEnable(PWM_MAIN_PERIPH_GPIO);
@@ -60,9 +72,6 @@ void initMainRotor(void)
 
 void initTailRotor(void)
 {
-//    SysCtlPeripheralReset(PWM_TAIL_PERIPH_GPIO); // Used for PWM output
-//    SysCtlPeripheralReset(PWM_TAIL_PERIPH_PWM);  // Main Rotor PWM
-
     SysCtlPeripheralEnable(PWM_TAIL_PERIPH_PWM);
     SysCtlPeripheralEnable(PWM_TAIL_PERIPH_GPIO);
 
@@ -89,7 +98,7 @@ void enableRotors(void)
 
 void setMainPWM(uint32_t ui32Duty)
 {
-    g_main_duty = ui32Duty;
+    g_mainDuty = ui32Duty;
     // Calculate the PWM period corresponding to the freq.
     uint32_t ui32Period =
         SysCtlClockGet() / PWM_DIVIDER / PWM_FREQ;
@@ -101,7 +110,7 @@ void setMainPWM(uint32_t ui32Duty)
 
 void setTailPWM(uint32_t ui32Duty)
 {
-    g_tail_duty = ui32Duty;
+    g_tailDuty = ui32Duty;
     // Calculate the PWM period corresponding to the freq.
     uint32_t ui32Period =
         SysCtlClockGet() / PWM_DIVIDER / PWM_FREQ;

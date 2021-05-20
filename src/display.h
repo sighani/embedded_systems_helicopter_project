@@ -1,13 +1,15 @@
 /*
- * display.h
+ * display.c
  *
  *  Created on: 22/04/2021
  *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ * 
+ *  Writes inputs to OLED display on BoosterPack.
  */
 
 #ifndef SRC_DISPLAY_H_
 #define SRC_DISPLAY_H_
 
-void updateFlightData(uint32_t heli_alt, int16_t yaw, int16_t duty_tail, uint16_t duty_main, int16_t alt_ref, int16_t tail_ref);
+void updateFlightData(int16_t heliAlt, int16_t yaw, uint16_t dutyTail, uint16_t dutyMain, int16_t altRef, int16_t tailRef);
 
 #endif /* SRC_DISPLAY_H_ */

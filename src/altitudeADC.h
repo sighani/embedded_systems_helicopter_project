@@ -1,8 +1,10 @@
 /*
- * altitudeADC.h
+ * altitudeADC.c
  *
- *  Created on: 12/05/2021
- *      Authors: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ *  Created on: 22/04/2021
+ *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ *  
+ *  Samples ADC values for conversion to percentage height. Taken from Labcode.
  */
 
 #ifndef SRC_ALTITUDEADC_H_
@@ -12,7 +14,9 @@
 
 // Constants
 #define BUF_SIZE 50
-#define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this is being done at 500hz
+#define SAMPLE_RATE_HZ 500
+//By Nyquist Theorem it must be greater than 8
+//however this is being done at 500hz to create a more responsive system
 
 // Global Variables
 extern circBuf_t g_inBuffer; // Buffer of size BUF_SIZE integers (sample values)

@@ -3,6 +3,8 @@
  *
  *  Created on: 12/05/2021
  *      Authors: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ * 
+ *  Controls Yaw intialisation and interupts
  */
 
 #ifndef SRC_YAW_H_
@@ -19,10 +21,6 @@
 
 #define TEETH_NUM 112
 
-// Global Variables
-//extern uint32_t g_ulSampCnt;    // Counter for the interrupts
-
-static int16_t yaw_ref;
 static uint8_t currentState = 0;
 static uint8_t previousState = 0;
 

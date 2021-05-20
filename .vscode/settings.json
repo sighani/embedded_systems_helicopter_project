@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "string": "c",
-        "iosfwd": "c",
-        "altitudeadc.h": "c",
-        "setup.h": "c"
-    }
-}

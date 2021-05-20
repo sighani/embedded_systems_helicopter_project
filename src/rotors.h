@@ -1,3 +1,13 @@
+/*
+ * rotors.h
+ *
+ *  Created on: 14/05/2021
+ *      Authors: Nat
+ * 
+ *  Abstracts away PWM generation to give straight forward control.
+ *  TAKEN FROM LABCODE
+ */
+
 #ifndef __ROTORS_H__
 #define __ROTORS_H__
 
@@ -16,6 +26,6 @@ void setMainPWM(uint32_t ui32Duty);
 
 void setTailPWM(uint32_t ui32Duty);
 
-extern uint16_t g_main_duty;
-extern uint16_t g_tail_duty;
+extern uint16_t g_mainDuty;
+extern uint16_t g_tailDuty;
 #endif // __ROTORS_H__

@@ -4,7 +4,8 @@
  *  Created on: 19/03/2021
  *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
  *
- *  Extraction of initialisation code from ADCdemo1.c and button polling from lab 2
+ *  Setsup SYSTICK hander.
+ *  TAKEN FROM LABCODE.
  */
 #include <stdbool.h>
 #include <stdint.h>
@@ -14,8 +15,6 @@
 #include "driverlib/adc.h"
 #include "../OrbitOLED/OrbitOLEDInterface.h"
 #include "inc/hw_memmap.h"
-//#include "driverlib/interrupt.h"
-//#include "inc/tm4c123gh6pm.h"
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
 #include "altitudeADC.h"
@@ -30,15 +29,14 @@ void SysTickIntHandler(void)
 {
     ADCProcessorTrigger(ADC0_BASE, 3);
 
-//    controllerYaw();
-
-    if (g_altControllerTrigger >= 10) {
+    //SLOW DOWN PI CONTROL
+    if (g_altControllerTrigger >= 10)
+    {
         g_altControllerTrigger = 0;
         controllerAltitude();
         controllerYaw();
     }
     g_altControllerTrigger++;
-
 }
 
 // Intialisation

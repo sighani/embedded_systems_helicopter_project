@@ -3,6 +3,9 @@
  *
  *  Created on: 22/04/2021
  *      Author: Nathaniel Stainton, Saman Ighani, Jack Walsh
+ *  
+ *  Samples ADC values for conversion to percentage height.
+ *  TAKEN FROM LABCODE
  */
 
 #include <stdbool.h>
@@ -14,19 +17,13 @@
 #include "driverlib/adc.h"
 #include "../OrbitOLED/OrbitOLEDInterface.h"
 #include "inc/hw_memmap.h"
-//#include "driverlib/interrupt.h"
-//#include "inc/tm4c123gh6pm.h"
 #include "labcode/buttons4.h"
 #include "driverlib/gpio.h"
-#include "altitudeADC.h"
 
-// Constants
-#define BUF_SIZE 50
-#define SAMPLE_RATE_HZ 500 //By Nyquist Theorem it must be greater than 8, however for polling buttons, this is being done at 500hz
+#include "altitudeADC.h"
 
 // Global Variables
 circBuf_t g_inBuffer; // Buffer of size BUF_SIZE integers (sample values)
-//uint32_t g_ulSampCnt;    // Counter for the interrupts
 
 void ADCIntHandler(void)
 {
